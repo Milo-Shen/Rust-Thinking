@@ -1,3 +1,6 @@
+mod destructuring_assignment;
+
 fn main() {
-    println!("Hello, world!");
+    println!("learn destructuring_assignment");
+    destructuring_assignment::destructuring_assignment();
 }
