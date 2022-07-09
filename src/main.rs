@@ -1,4 +1,5 @@
 mod basic_types;
+mod char_bool_unit;
 mod destructuring_assignment;
 
 fn main() {
@@ -7,4 +8,7 @@ fn main() {
 
     println!("learn basic types");
     basic_types::basic_types();
+
+    println!("learn char bool unit");
+    char_bool_unit::char_bool_unit();
 }
