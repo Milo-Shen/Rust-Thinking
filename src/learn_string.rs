@@ -116,6 +116,20 @@ pub fn learning_string() {
     assert_eq!(s3, "hello,world!");
     // 下面的语句如果去掉注释，就会报错
     // println!("{}",s1);
+
+    // String = String + &str + &str + &str + &str
+    let s1 = String::from("tic");
+    let s2 = String::from("tac");
+    let s3 = String::from("toe");
+    let s = s1 + "-" + &s2 + "-" + &s3;
+    dbg!(s);
+
+    // 2、使用 format! 连接字符串
+    // format! 这种方式适用于 String 和 &str 。format! 的用法与 print! 的用法类似，详见格式化输出。
+    let s1 = "hello";
+    let s2 = String::from("rust");
+    let s = format!("{} {}!", s1, s2);
+    println!("{}", s);
 }
 
 fn say_hello(s: &str) {
