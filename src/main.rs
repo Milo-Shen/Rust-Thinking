@@ -2,6 +2,7 @@ mod basic_types;
 mod char_bool_unit;
 mod complex_types;
 mod destructuring_assignment;
+mod learn_string;
 mod reference;
 mod statements_expressions;
 
@@ -23,4 +24,7 @@ fn main() {
 
     println!("learn complex types");
     complex_types::complex_types();
+
+    println!("learn string");
+    learn_string::learning_string();
 }
