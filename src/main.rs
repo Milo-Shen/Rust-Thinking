@@ -1,5 +1,6 @@
 mod basic_types;
 mod char_bool_unit;
+mod complex_types;
 mod destructuring_assignment;
 mod reference;
 mod statements_expressions;
@@ -19,4 +20,7 @@ fn main() {
 
     println!("learn references");
     reference::reference();
+
+    println!("learn complex types");
+    complex_types::complex_types();
 }
