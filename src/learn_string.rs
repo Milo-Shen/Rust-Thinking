@@ -160,6 +160,17 @@ pub fn learning_string() {
     // 如果还是有歧义，可以继续增加，没有限制
     let longer_delimiter = r###"A string with "# in it. And even "##!"###;
     println!("{}", longer_delimiter);
+
+    // 操作 UTF-8 字符串
+    // 字符, 如果你想要以 Unicode 字符的方式遍历字符串，最好的办法是使用 chars 方法，例如:
+    for c in "中国人".chars() {
+        println!("{}", c);
+    }
+
+    // 字节, 这种方式是返回字符串的底层字节数组表现形式:
+    for b in "中国人".bytes() {
+        println!("{}", b);
+    }
 }
 
 fn say_hello(s: &str) {
