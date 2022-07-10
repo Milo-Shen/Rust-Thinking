@@ -1,6 +1,7 @@
 mod basic_types;
 mod char_bool_unit;
 mod destructuring_assignment;
+mod statements_expressions;
 
 fn main() {
     println!("learn destructuring_assignment");
@@ -11,4 +12,7 @@ fn main() {
 
     println!("learn char bool unit");
     char_bool_unit::char_bool_unit();
+
+    println!("learn statements and expressions");
+    statements_expressions::statements_expressions();
 }
