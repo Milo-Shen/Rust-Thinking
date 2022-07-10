@@ -5,6 +5,7 @@ mod destructuring_assignment;
 mod learn_string;
 mod reference;
 mod statements_expressions;
+mod tuple;
 
 fn main() {
     println!("learn destructuring_assignment");
@@ -27,4 +28,7 @@ fn main() {
 
     println!("learn string");
     learn_string::learning_string();
+
+    println!("learn tuple");
+    tuple::tuple();
 }
