@@ -1,6 +1,7 @@
 mod basic_types;
 mod char_bool_unit;
 mod destructuring_assignment;
+mod reference;
 mod statements_expressions;
 
 fn main() {
@@ -15,4 +16,7 @@ fn main() {
 
     println!("learn statements and expressions");
     statements_expressions::statements_expressions();
+
+    println!("learn references");
+    reference::reference();
 }
