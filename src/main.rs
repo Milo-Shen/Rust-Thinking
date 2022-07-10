@@ -3,6 +3,7 @@ mod char_bool_unit;
 mod complex_types;
 mod destructuring_assignment;
 mod learn_string;
+mod learn_struct;
 mod reference;
 mod statements_expressions;
 mod tuple;
@@ -31,4 +32,7 @@ fn main() {
 
     println!("learn tuple");
     tuple::tuple();
+
+    println!("learn struct");
+    learn_struct::learn_struct();
 }
