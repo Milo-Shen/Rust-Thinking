@@ -20,6 +20,7 @@ fn read(f: &mut File, save_to: &mut Vec<u8>) -> ! {
 pub fn complex_types() {
     let mut f1 = File::from("f1.txt");
     open(&mut f1);
+    // 因为 unimplemented 和 ! 的原因，这行会提示 unreachable code
     // read(&mut f1, &mut vec![]);
     close(&mut f1);
 }
