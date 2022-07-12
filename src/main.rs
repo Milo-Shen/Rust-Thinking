@@ -4,6 +4,7 @@ mod complex_types;
 mod destructuring_assignment;
 mod learn_string;
 mod learn_struct;
+mod pattern_matching;
 mod process_control;
 mod reference;
 mod statements_expressions;
@@ -39,4 +40,7 @@ fn main() {
 
     println!("learn process control");
     process_control::process_control();
+
+    println!("learn pattern matching");
+    pattern_matching::pattern_matching();
 }
