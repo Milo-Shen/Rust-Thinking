@@ -41,6 +41,7 @@ pub fn process_control() {
     }
 
     // 第二种
+    // 由于 for 循环无需任何条件限制，也不需要通过索引来访问，因此是最安全也是最常用的
     for item in collection {
         println!("{}", item);
     }
@@ -50,4 +51,31 @@ pub fn process_control() {
 
     // 安全：第一种方式里对 collection 的索引访问是非连续的，存在一定可能性在两次访问之间，collection 发生了变化，导致脏数据产生。
     // 而第二种直接迭代的方式是连续访问，因此不存在这种风险（这里是因为所有权吗？是的话可能要强调一下）
+
+    // 我们也能用 while 来实现 for 的功能:
+    // 这个过程很容易出错；如果索引长度不正确会导致程序 panic。这也使程序更慢，因为编译器增加了运行时代码来对每次循环的每个元素进行条件检查。
+    let a = [10, 20, 30, 40, 50];
+    let mut index = 0;
+    while index < 5 {
+        println!("the value is: {}", a[index]);
+        index = index + 1;
+    }
+
+    // for 并不会使用索引去访问数组，因此更安全也更简洁，同时避免 运行时的边界检查，性能更高。
+    let a = [10, 20, 30, 40, 50];
+    for element in a.iter() {
+        println!("the value is: {}", element);
+    }
+
+    // loop 循环
+    // break 可以单独使用，也可以带一个返回值，有些类似 return
+    // loop 是一个表达式，因此可以返回一个值
+    let mut counter = 0;
+    let result = loop {
+        counter += 1;
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+    println!("The result is {}", result);
 }
