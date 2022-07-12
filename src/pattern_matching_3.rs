@@ -188,4 +188,21 @@ pub fn pattern_matching_3() {
     }
 
     println!("{:?}", s);
+
+    // 用 .. 忽略剩余值
+    // 对于有多个部分的值，可以使用 .. 语法来只使用部分值而忽略其它值，这样也不用再为每一个被忽略的值都单独列出下划线。.. 模式会忽略模式中剩余的任何没有显式匹配的值部分。
+    let origin = Point { x: 0, y: 0 };
+
+    match origin {
+        Point { x, .. } => println!("x is {}", x),
+    }
+
+    // 还可以用 .. 来忽略元组中间的某些值
+    let numbers = (2, 4, 8, 16, 32);
+
+    match numbers {
+        (first, .., last) => {
+            println!("Some numbers: {}, {}", first, last);
+        }
+    }
 }
