@@ -103,4 +103,37 @@ pub fn pattern_matching_3() {
             println!("Change the color to red {}, green {}, and blue {}", r, g, b)
         }
     }
+
+    // 解构嵌套的结构体和枚举
+    enum Color {
+        Rgb(i32, i32, i32),
+        Hsv(i32, i32, i32),
+    }
+
+    enum Message1 {
+        Quit,
+        Move { x: i32, y: i32 },
+        Write(String),
+        ChangeColor(Color),
+    }
+
+    let msg = Message1::ChangeColor(Color::Hsv(0, 160, 255));
+
+    match msg {
+        Message1::ChangeColor(Color::Rgb(r, g, b)) => {
+            println!("Change the color to red {}, green {}, and blue {}", r, g, b)
+        }
+        Message1::ChangeColor(Color::Hsv(h, s, v)) => {
+            println!(
+                "Change the color to hue {}, saturation {}, and value {}",
+                h, s, v
+            )
+        }
+        _ => (),
+    }
+
+    // 解构结构体和元组
+    // 我们甚至可以用复杂的方式来混合、匹配和嵌套解构模式。如下是一个复杂结构体的例子，其中结构体和元组嵌套在元组中，并将所有的原始类型解构出来：
+    let ((feet, inches), Point { x, y }) = ((3, 10), Point { x: 3, y: -10 });
+    println!("{}, {}, {}, {}", feet, inches, x, y);
 }
