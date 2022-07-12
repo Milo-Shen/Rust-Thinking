@@ -6,6 +6,7 @@ mod learn_string;
 mod learn_struct;
 mod option;
 mod pattern_matching;
+mod pattern_matching_2;
 mod process_control;
 mod reference;
 mod statements_expressions;
@@ -47,4 +48,7 @@ fn main() {
 
     println!("learn options");
     option::option();
+
+    println!("learn pattern matching 2");
+    pattern_matching_2::pattern_matching_2();
 }

@@ -7,7 +7,6 @@ fn plus_one(x: Option<i32>) -> Option<i32> {
 
 pub fn option() {
     // 匹配 Option<T>
-
     let five = Some(5);
     let six = plus_one(five);
     let none = plus_one(None);
