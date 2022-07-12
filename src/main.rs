@@ -8,6 +8,7 @@ mod option;
 mod pattern_matching_1;
 mod pattern_matching_2;
 mod pattern_matching_3;
+mod pattern_matching_4;
 mod process_control;
 mod reference;
 mod statements_expressions;
@@ -55,4 +56,7 @@ fn main() {
 
     println!("learn pattern matching 3");
     pattern_matching_3::pattern_matching_3();
+
+    println!("learn pattern matching 4");
+    pattern_matching_4::pattern_matching_4();
 }
