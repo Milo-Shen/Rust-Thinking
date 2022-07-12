@@ -5,6 +5,11 @@ pub enum Direction {
     South,
 }
 
+enum MyEnum {
+    Foo,
+    Bar,
+}
+
 enum Action {
     Say(String),
     MoveTo(i32, i32),
@@ -53,6 +58,34 @@ pub fn pattern_matching() {
             }
         }
     }
+
+    // matches!宏
+    let v = vec![MyEnum::Foo, MyEnum::Bar, MyEnum::Foo];
+    let c = v.iter().filter(|x| matches!(x, MyEnum::Foo));
+
+    let foo = 'f';
+    assert!(matches!(foo, 'A'..='Z' | 'a'..='z'));
+
+    let bar = Some(4);
+    assert!(matches!(bar, Some(x) if x > 2));
+
+    // 变量覆盖
+    // 无论是 match 还是 if let，他们都可以在模式匹配时覆盖掉老的值，绑定新的值:
+    let age = Some(30);
+    println!("在匹配前，age是{:?}", age);
+    if let Some(age) = age {
+        println!("匹配出来的age是{}", age);
+    }
+    println!("在匹配后，age是{:?}", age);
+
+    // match 中的变量覆盖其实不是那么的容易看出，因此要小心！
+    let age = Some(30);
+    println!("在匹配前，age是{:?}", age);
+    match age {
+        Some(age) => println!("匹配出来的age是{}", age),
+        _ => (),
+    }
+    println!("在匹配后，age是{:?}", age);
 }
 
 #[derive(Debug)]
