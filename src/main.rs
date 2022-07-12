@@ -5,7 +5,7 @@ mod destructuring_assignment;
 mod learn_string;
 mod learn_struct;
 mod option;
-mod pattern_matching;
+mod pattern_matching_1;
 mod pattern_matching_2;
 mod process_control;
 mod reference;
@@ -43,11 +43,11 @@ fn main() {
     println!("learn process control");
     process_control::process_control();
 
-    println!("learn pattern matching");
-    pattern_matching::pattern_matching();
-
     println!("learn options");
     option::option();
+
+    println!("learn pattern matching");
+    pattern_matching_1::pattern_matching();
 
     println!("learn pattern matching 2");
     pattern_matching_2::pattern_matching_2();
