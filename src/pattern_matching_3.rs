@@ -168,4 +168,24 @@ pub fn pattern_matching_3() {
             println!("Some numbers: {}, {}, {}", first, third, fifth)
         }
     }
+
+    // 使用下划线开头忽略未使用的变量
+    // 注意, 只使用 _ 和使用以下划线开头的名称有些微妙的不同：比如 _x 仍会将值绑定到变量，而 _ 则完全不会绑定。
+    let s = Some(String::from("Hello!"));
+
+    // s 是一个拥有所有权的动态字符串，在上面代码中，如果不使用引用的话，我们会得到一个错误，因为 s 的值会被转移给 _s，在 println! 中再次使用 s 会报错：
+    if let Some(_s) = &s {
+        println!("found a string");
+    }
+
+    println!("{:?}", s);
+
+    // 只使用下划线本身，则并不会绑定值，因为 s 没有被移动进 _：
+    let s = Some(String::from("Hello!"));
+
+    if let Some(_) = s {
+        println!("found a string");
+    }
+
+    println!("{:?}", s);
 }
