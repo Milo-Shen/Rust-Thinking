@@ -136,4 +136,11 @@ pub fn pattern_matching_3() {
     // 我们甚至可以用复杂的方式来混合、匹配和嵌套解构模式。如下是一个复杂结构体的例子，其中结构体和元组嵌套在元组中，并将所有的原始类型解构出来：
     let ((feet, inches), Point { x, y }) = ((3, 10), Point { x: 3, y: -10 });
     println!("{}, {}, {}, {}", feet, inches, x, y);
+
+    // 使用 _ 忽略整个值
+    // 虽然 _ 模式作为 match 表达式最后的分支特别有用，但是它的作用还不限于此。例如可以将其用于函数参数中：
+    fn foo(_: i32, y: i32) {
+        println!("This code only uses the y parameter: {}", y);
+    }
+    foo(3, 4);
 }
