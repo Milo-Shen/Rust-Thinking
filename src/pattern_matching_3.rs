@@ -30,4 +30,48 @@ pub fn pattern_matching_3() {
         3 => println!("three"),
         _ => println!("anything"),
     }
+
+    // 通过序列 ..= 匹配值的范围
+    // ..= 语法允许你匹配一个闭区间序列内的值。在如下代码中，当模式匹配任何在此序列内的值时，该分支会执行：
+    let x = 5;
+
+    // 序列只允许用于数字或字符类型，原因是：它们可以连续，同时编译器在编译期可以检查该序列是否为空，字符和数字值是 Rust 中仅有的可以用于判断是否为空的类型。
+    match x {
+        1..=5 => println!("one through five"),
+        _ => println!("something else"),
+    }
+
+    // 如下是一个使用字符类型序列的例子:
+    // Rust 知道 'c' 位于第一个模式的序列内，所以会打印出 early ASCII letter。
+    let x = 'c';
+
+    match x {
+        'a'..='j' => println!("early ASCII letter"),
+        'k'..='z' => println!("late ASCII letter"),
+        _ => println!("something else"),
+    }
+
+    // 解构并分解值
+    // 解构结构体
+    struct Point {
+        x: i32,
+        y: i32,
+    }
+
+    let p = Point { x: 0, y: 7 };
+
+    // 这段代码创建了变量 a 和 b 来匹配结构体 p 中的 x 和 y 字段，这个例子展示了模式中的变量名不必与结构体中的字段名一致。不过通常希望变量名与字段名一致以便于理解变量来自于哪些字段。
+    let Point { x: a, y: b } = p;
+    assert_eq!(0, a);
+    assert_eq!(7, b);
+
+    // 因为变量名匹配字段名是常见的，同时因为 let Point { x: x, y: y } = p; 中 x 和 y 重复了，所以对于匹配结构体字段的模式存在简写：只需列出结构体字段的名称，则模式创建的变量会有相同的名称。下例与上例有着相同行为的代码，不过 let 模式创建的变量为 x 和 y 而不是 a 和 b：
+    let p = Point { x: 0, y: 7 };
+
+    let Point { x, y } = p;
+    assert_eq!(0, x);
+    assert_eq!(7, y);
+
+    // 也可以使用字面值作为结构体模式的一部分进行解构，而不是为所有的字段创建变量。这允许我们测试一些字段为特定值的同时创建其他字段的变量。
+    // 下文展示了固定某个字段的匹配方式:
 }
