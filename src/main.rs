@@ -4,6 +4,7 @@ mod complex_types;
 mod destructuring_assignment;
 mod learn_string;
 mod learn_struct;
+mod process_control;
 mod reference;
 mod statements_expressions;
 mod tuple;
@@ -35,4 +36,7 @@ fn main() {
 
     println!("learn struct");
     learn_struct::learn_struct();
+
+    println!("learn process control");
+    process_control::process_control();
 }
