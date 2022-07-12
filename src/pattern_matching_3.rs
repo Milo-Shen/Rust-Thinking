@@ -143,4 +143,29 @@ pub fn pattern_matching_3() {
         println!("This code only uses the y parameter: {}", y);
     }
     foo(3, 4);
+
+    // 使用嵌套的 _ 忽略部分值
+    // 可以在一个模式内部使用 _ 忽略部分值:
+    let mut setting_value = Some(5);
+    let new_setting_value = Some(10);
+
+    // 第一个匹配分支，我们不关心里面的值，只关心元组中两个元素的类型，因此对于 Some 中的值，直接进行忽略。 剩下的形如 (Some(_),None)，(None, Some(_)), (None,None) 形式，都由第二个分支 _ 进行分配。
+    match (setting_value, new_setting_value) {
+        (Some(_), Some(_)) => {
+            println!("Can't overwrite an existing customized value");
+        }
+        _ => {
+            setting_value = new_setting_value;
+        }
+    }
+
+    // 还可以在一个模式中的多处使用下划线来忽略特定值，如下所示，这里忽略了一个五元元组中的第二和第四个值:
+    let numbers = (2, 4, 8, 16, 32);
+
+    // 老生常谈：模式匹配一定要类型相同，因此匹配 numbers 元组的模式，也必须有五个值（元组中元素的数量也属于元组类型的一部分）。
+    match numbers {
+        (first, _, third, _, fifth) => {
+            println!("Some numbers: {}, {}, {}", first, third, fifth)
+        }
+    }
 }
