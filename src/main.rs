@@ -2,6 +2,7 @@ mod basic_types;
 mod char_bool_unit;
 mod complex_types;
 mod destructuring_assignment;
+mod generics;
 mod learn_string;
 mod learn_struct;
 mod method;
@@ -63,4 +64,7 @@ fn main() {
 
     println!("learn method");
     method::method();
+
+    println!("learn generics");
+    generics::generics();
 }
