@@ -4,6 +4,7 @@ mod complex_types;
 mod destructuring_assignment;
 mod learn_string;
 mod learn_struct;
+mod method;
 mod option;
 mod pattern_matching_1;
 mod pattern_matching_2;
@@ -59,4 +60,7 @@ fn main() {
 
     println!("learn pattern matching 4");
     pattern_matching_4::pattern_matching_4();
+
+    println!("learn method");
+    method::method();
 }
