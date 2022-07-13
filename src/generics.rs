@@ -10,4 +10,16 @@ pub fn generics() {
     let integer = Point { x: 5, y: 10 };
     let float = Point { x: 1.0, y: 4.0 };
     println!("{:?}, {:?}", integer, float);
+
+    // 枚举中使用泛型
+    // 提到枚举类型，Option 永远是第一个应该被想起来的，在之前的章节中，它也多次出现：
+    enum Option<T> {
+        Some(T),
+        None,
+    }
+
+    enum Result<T, E> {
+        Ok(T),
+        Err(E),
+    }
 }
