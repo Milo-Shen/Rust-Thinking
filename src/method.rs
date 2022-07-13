@@ -75,4 +75,9 @@ pub fn method() {
         "The height of the Rectangle1 is {} square pixels.",
         rect1.height()
     );
+
+    // -> 运算符到哪去了？
+    // 他是这样工作的：当使用 object.something() 调用方法时，Rust 会自动为 object 添加 &、&mut 或 * 以便使 object 与方法签名匹配。也就是说，这些代码是等价的：
+    // p1.distance(&p2) 等价于 (&p1).distance(&p2);
+    // 第一行看起来简洁的多。这种自动引用的行为之所以有效，是因为方法有一个明确的接收者———— self 的类型。在给出接收者和方法名的前提下，Rust 可以明确地计算出方法是仅仅读取（&self），做出修改（&mut self）或者是获取所有权（self）。事实上，Rust 对方法接收者的隐式借用让所有权在实践中更友好。
 }
