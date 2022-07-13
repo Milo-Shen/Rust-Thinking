@@ -4,6 +4,12 @@ struct Point<T> {
     y: T,
 }
 
+impl<T> Point<T> {
+    fn x(&self) -> &T {
+        &self.x
+    }
+}
+
 pub fn generics() {
     // 提前声明，跟泛型函数定义类似，首先我们在使用泛型参数之前必需要进行声明 Point<T>，接着就可以在结构体的字段类型中使用 T 来替代具体的类型
     // x 和 y 是相同的类型
@@ -24,4 +30,8 @@ pub fn generics() {
         Ok(T),
         Err(E),
     }
+
+    // 方法中使用泛型
+    let p = Point { x: 5, y: 10 };
+    println!("p.x = {}", p.x());
 }
