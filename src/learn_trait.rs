@@ -89,4 +89,10 @@ pub fn learn_trait() {
     }
 
     notify(&post);
+
+    // 特征约束(trait bound)
+    pub fn notify1(item1: &impl Summary, item2: &impl Summary) {}
+    // 如果函数两个参数是不同的类型，那么上面的方法很好，只要这两个类型都实现了 Summary 特征即可。但是如果我们想要强制函数的两个参数是同一类型呢？上面的语法就无法做到这种限制，此时我们只能使特征约束来实现：
+    pub fn notify2<T: Summary>(item1: &T, item2: &T) {}
+    // 泛型类型 T 说明了 item1 和 item2 必须拥有同样的类型，同时 T: Summary 说明了 T 必须实现 Summary 特征。
 }
