@@ -84,4 +84,9 @@ pub fn learn_trait() {
     println!("{}", qq.summarize());
 
     // 使用特征作为函数参数
+    pub fn notify(item: &impl Summary) {
+        println!("Breaking news! {}", item.summarize());
+    }
+
+    notify(&post);
 }
