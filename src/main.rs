@@ -5,6 +5,7 @@ mod destructuring_assignment;
 mod generics;
 mod learn_string;
 mod learn_struct;
+mod learn_trait;
 mod method;
 mod option;
 mod pattern_matching_1;
@@ -67,4 +68,7 @@ fn main() {
 
     println!("learn generics");
     generics::generics();
+
+    println!("learn trait");
+    learn_trait::learn_trait();
 }
