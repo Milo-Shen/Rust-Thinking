@@ -135,4 +135,9 @@ pub fn learn_trait() {
             }
         }
     }
+
+    // 也可以有条件地实现特征, 例如，标准库为任何实现了 Display 特征的类型实现了 ToString 特征：
+    // impl<T: Display> ToString for T {
+    //     // --snip--
+    // }
 }
