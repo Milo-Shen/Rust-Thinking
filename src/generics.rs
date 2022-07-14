@@ -4,6 +4,7 @@ struct Point<T> {
     y: T,
 }
 
+// 需要注意的是，这里的 Point<T> 不再是泛型声明，而是一个完整的结构体类型，因为我们定义的结构体就是 Point<T> 而不再是 Point。
 impl<T> Point<T> {
     fn x(&self) -> &T {
         &self.x
@@ -34,4 +35,25 @@ pub fn generics() {
     // 方法中使用泛型
     let p = Point { x: 5, y: 10 };
     println!("p.x = {}", p.x());
+
+    // 除了结构体中的泛型参数，我们还能在该结构体的方法中定义额外的泛型参数，就跟泛型函数一样
+    // 这个例子中，T,U 是定义在结构体 Point 上的泛型参数，V,W 是单独定义在方法 mixup 上的泛型参数，它们并不冲突，说白了，你可以理解为，一个是结构体泛型，一个是函数泛型。
+    struct Point1<T, U> {
+        x: T,
+        y: U,
+    }
+
+    impl<T, U> Point1<T, U> {
+        fn mixup<V, W>(self, other: Point1<V, W>) -> Point1<T, W> {
+            Point1 {
+                x: self.x,
+                y: other.y,
+            }
+        }
+    }
+
+    let p1 = Point1 { x: 5, y: 10.4 };
+    let p2 = Point1 { x: "Hello", y: 'c' };
+    let p3 = p1.mixup(p2);
+    println!("p3.x = {}, p3.y = {}", p3.x, p3.y);
 }
