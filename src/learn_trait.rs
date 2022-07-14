@@ -53,4 +53,15 @@ pub fn learn_trait() {
 
     // 默认实现
     // 你可以在特征中定义具有默认实现的方法，这样其它类型无需再实现该方法，或者也可以选择重载该方法：
+    pub trait Summary1 {
+        fn summarize(&self) -> String {
+            String::from("(Read more...)")
+        }
+    }
+
+    struct QQ {}
+    impl Summary1 for QQ {}
+
+    let qq = QQ {};
+    println!("{}", qq.summarize());
 }
