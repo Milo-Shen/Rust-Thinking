@@ -64,4 +64,24 @@ pub fn learn_trait() {
 
     let qq = QQ {};
     println!("{}", qq.summarize());
+
+    // 默认实现允许调用相同特征中的其他方法，哪怕这些方法没有默认实现。如此，特征可以提供很多有用的功能而只需要实现指定的一小部分内容。例如，我们可以定义 Summary 特征，使其具有一个需要实现的 summarize_author 方法，然后定义一个 summarize 方法，此方法的默认实现调用 summarize_author 方法：
+    pub trait Summary2 {
+        fn summarize_author(&self) -> String;
+
+        fn summarize(&self) -> String {
+            format!("(Read more from {}...)", self.summarize_author())
+        }
+    }
+
+    struct QQ1 {}
+    impl Summary2 for QQ1 {
+        fn summarize_author(&self) -> String {
+            String::from("summarize_author")
+        }
+    }
+    let qq = QQ1 {};
+    println!("{}", qq.summarize());
+
+    // 使用特征作为函数参数
 }
