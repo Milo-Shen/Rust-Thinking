@@ -15,6 +15,7 @@ mod pattern_matching_4;
 mod process_control;
 mod reference;
 mod statements_expressions;
+mod trait_obj;
 mod tuple;
 
 fn main() {
@@ -71,4 +72,5 @@ fn main() {
 
     println!("learn trait");
     learn_trait::learn_trait();
+    trait_obj::trait_obj();
 }
