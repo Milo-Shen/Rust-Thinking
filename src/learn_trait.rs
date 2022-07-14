@@ -24,6 +24,7 @@ pub fn learn_trait() {
         }
     }
 
+    #[derive(Debug)]
     pub struct Weibo {
         pub username: String,
         pub content: String,
@@ -140,4 +141,56 @@ pub fn learn_trait() {
     // impl<T: Display> ToString for T {
     //     // --snip--
     // }
+
+    // 函数返回中的 impl Trait
+    fn returns_summarizable() -> impl Summary + Debug {
+        Weibo {
+            username: String::from("sunface"),
+            content: String::from("m1 max太厉害了，电脑再也不会卡"),
+        }
+    }
+
+    println!("{:?}", returns_summarizable());
+
+    // 但是这种返回值方式有一个很大的限制：只能有一个具体的类型，例如：
+    // 报错提示我们 if 和 else 返回了不同的类型。如果想要实现返回不同的类型，需要使用下一章节中的特征对象。
+    // fn returns_summarizable1(switch: bool) -> impl Summary {
+    //     if switch {
+    //         Post {
+    //             title: String::from("Penguins win the Stanley Cup Championship!"),
+    //             author: String::from("Iceburgh"),
+    //             content: String::from(
+    //                 "The Pittsburgh Penguins once again are the best \
+    //                  hockey team in the NHL.",
+    //             ),
+    //         }
+    //     } else {
+    //         Weibo {
+    //             username: String::from("horse_ebooks"),
+    //             content: String::from("of course, as you probably already know, people"),
+    //         }
+    //     }
+    // }
+
+    fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
+        let mut largest = list[0];
+
+        for &item in list.iter() {
+            if item > largest {
+                largest = item;
+            }
+        }
+
+        largest
+    }
+
+    let number_list = vec![34, 50, 25, 100, 65];
+
+    let result = largest(&number_list);
+    println!("The largest number is {}", result);
+
+    let char_list = vec!['y', 'm', 'a', 'q'];
+
+    let result = largest(&char_list);
+    println!("The largest char is {}", result);
 }
