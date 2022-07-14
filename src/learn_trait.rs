@@ -193,4 +193,7 @@ pub fn learn_trait() {
 
     let result = largest(&char_list);
     println!("The largest char is {}", result);
+
+    // 通过 derive 派生特征
+    // 在本书中，形如 #[derive(Debug)] 的代码已经出现了很多次，这种是一种特征派生语法，被 derive 标记的对象会自动实现对应的默认特征代码，继承相应的功能。
 }
