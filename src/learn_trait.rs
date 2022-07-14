@@ -1,3 +1,5 @@
+use std::fmt::{Debug, Display};
+
 pub fn learn_trait() {
     // 特征定义了一个可以被共享的行为，只要实现了特征，你就能使用该行为。
 
@@ -95,4 +97,20 @@ pub fn learn_trait() {
     // 如果函数两个参数是不同的类型，那么上面的方法很好，只要这两个类型都实现了 Summary 特征即可。但是如果我们想要强制函数的两个参数是同一类型呢？上面的语法就无法做到这种限制，此时我们只能使特征约束来实现：
     pub fn notify2<T: Summary>(item1: &T, item2: &T) {}
     // 泛型类型 T 说明了 item1 和 item2 必须拥有同样的类型，同时 T: Summary 说明了 T 必须实现 Summary 特征。
+
+    // 多重约束
+    // 除了单个约束条件，我们还可以指定多个约束条件，例如除了让参数实现 Summary 特征外，还可以让参数实现 Display 特征以控制它的格式化输出：
+    pub fn notify3(item: &(impl Summary + Display)) {}
+    pub fn notify4<T: Summary + Display>(item: &T) {}
+
+    // Where 约束
+    // 当特征约束变得很多时，函数的签名将变得很复杂：
+    fn some_function<T: Display + Clone, U: Clone + Debug>(t: &T, u: &U) {}
+    // 严格来说，上面的例子还是不够复杂，但是我们还是能对其做一些形式上的改进，通过 where：
+    fn some_function1<T, U>(t: &T, u: &U)
+    where
+        T: Display + Clone,
+        U: Clone + Debug,
+    {
+    }
 }
