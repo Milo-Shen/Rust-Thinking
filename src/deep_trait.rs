@@ -1,4 +1,4 @@
-use std::fmt;
+use std::{fmt, ops::Add};
 
 pub fn deep_trait() {
     // 关联类型
@@ -77,10 +77,53 @@ pub fn deep_trait() {
 
     // 默认泛型类型参数
     // 当使用泛型类型参数时，可以为其指定一个默认的具体类型，例如标准库中的 std::ops::Add 特征：
-    trait Add<RHS = Self> {
-        type Output;
+    // trait Add<RHS = Self> {
+    //     type Output;
 
-        fn add(self, rhs: RHS) -> Self::Output;
-    }
+    //     fn add(self, rhs: RHS) -> Self::Output;
+    // }
     // 它有一个泛型参数 RHS，但是与我们以往的用法不同，这里它给 RHS 一个默认值，也就是当用户不指定 RHS 时，默认使用两个同样类型的值进行相加，然后返回一个关联类型 Output。
+
+    #[derive(Debug, PartialEq)]
+    struct Point {
+        x: i32,
+        y: i32,
+    }
+
+    impl Add for Point {
+        type Output = Point;
+
+        fn add(self, other: Point) -> Point {
+            Point {
+                x: self.x + other.x,
+                y: self.y + other.y,
+            }
+        }
+    }
+
+    assert_eq!(
+        Point { x: 1, y: 0 } + Point { x: 2, y: 3 },
+        Point { x: 3, y: 3 }
+    );
+
+    // 上面的代码主要干了一件事，就是为 Point 结构体提供 + 的能力，这就是运算符重载，不过 Rust 并不支持创建自定义运算符，你也无法为所有运算符进行重载，目前来说，只有定义在 std::ops 中的运算符才能进行重载。
+    // 跟 + 对应的特征是 std::ops::Add，我们在之前也看过它的定义 trait Add<RHS=Self>，但是上面的例子中并没有为 Point 实现 Add<RHS> 特征，而是实现了 Add 特征（没有默认泛型类型参数），这意味着我们使用了 RHS 的默认类型，也就是 Self。换句话说，我们这里定义的是两个相同的 Point 类型相加，因此无需指定 RHS。
+
+    // 与上面的例子相反，下面的例子，我们来创建两个不同类型的相加：
+    // 这里，是进行 Millimeters + Meters 两种数据类型的 + 操作，因此此时不能再使用默认的 RHS，否则就会变成 Millimeters + Millimeters 的形式。
+    // 使用 Add<Meters> 可以将 RHS 指定为 Meters，那么 fn add(self, rhs: RHS) 自然而言的变成了 Millimeters 和 Meters 的相加。
+
+    // 默认类型参数主要用于两个方面：
+    // 1. 减少实现的样板代码
+    // 2. 扩展类型但是无需大幅修改现有的代码
+    struct Millimeters(u32);
+    struct Meters(u32);
+
+    impl Add<Meters> for Millimeters {
+        type Output = Millimeters;
+
+        fn add(self, other: Meters) -> Self::Output {
+            Millimeters(self.0 + (other.0 * 1000))
+        }
+    }
 }
