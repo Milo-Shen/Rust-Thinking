@@ -73,4 +73,5 @@ pub fn deep_trait() {
 
     // todo: add example for this
     let container_exp_1 = ContainerExp { a: 1, b: 1 };
+    container_exp_1.contains(&container_exp_1.a, &container_exp_1.b);
 }
