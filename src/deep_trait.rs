@@ -51,4 +51,26 @@ pub fn deep_trait() {
     }
 
     fn difference1<C: Container1>(container: &C) {}
+
+    trait Container2 {
+        type A;
+        type B;
+        fn contains(&self, a: &Self::A, b: &Self::B);
+    }
+
+    struct ContainerExp<A, B> {
+        a: A,
+        b: B,
+    }
+
+    impl<A, B> Container2 for ContainerExp<A, B> {
+        type A = u32;
+        type B = u32;
+        fn contains(&self, a: &Self::A, b: &Self::B) {
+            println!("A: {}, B: {}", a, b);
+        }
+    }
+
+    // todo: add example for this
+    let container_exp_1 = ContainerExp { a: 1, b: 1 };
 }
