@@ -1,6 +1,7 @@
 mod basic_types;
 mod char_bool_unit;
 mod complex_types;
+mod deep_trait;
 mod destructuring_assignment;
 mod generics;
 mod learn_string;
@@ -73,4 +74,7 @@ fn main() {
     println!("learn trait");
     learn_trait::learn_trait();
     trait_obj::trait_obj();
+
+    println!("learn deep trait");
+    deep_trait::deep_trait();
 }
