@@ -74,4 +74,13 @@ pub fn deep_trait() {
     // todo: add example for this
     let container_exp_1 = ContainerExp { a: 1, b: 1 };
     container_exp_1.contains(&container_exp_1.a, &container_exp_1.b);
+
+    // 默认泛型类型参数
+    // 当使用泛型类型参数时，可以为其指定一个默认的具体类型，例如标准库中的 std::ops::Add 特征：
+    trait Add<RHS = Self> {
+        type Output;
+
+        fn add(self, rhs: RHS) -> Self::Output;
+    }
+    // 它有一个泛型参数 RHS，但是与我们以往的用法不同，这里它给 RHS 一个默认值，也就是当用户不指定 RHS 时，默认使用两个同样类型的值进行相加，然后返回一个关联类型 Output。
 }
