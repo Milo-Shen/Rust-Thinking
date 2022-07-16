@@ -116,7 +116,9 @@ pub fn deep_trait() {
     // 默认类型参数主要用于两个方面：
     // 1. 减少实现的样板代码
     // 2. 扩展类型但是无需大幅修改现有的代码
+    #[derive(Debug)]
     struct Millimeters(u32);
+    #[derive(Debug)]
     struct Meters(u32);
 
     impl Add<Meters> for Millimeters {
@@ -126,4 +128,45 @@ pub fn deep_trait() {
             Millimeters(self.0 + (other.0 * 1000))
         }
     }
+
+    let millimeter = Millimeters(10);
+    let meter = Meters(5);
+    // 因为是为 Millimeters 实现的 Add 操作, 所以做加法时候 Millimeters
+    let final_millimeter = millimeter + meter;
+    println!("{:?}", final_millimeter);
+
+    // 调用同名的方法
+    // 不同特征拥有同名的方法是很正常的事情，你没有任何办法阻止这一点；甚至除了特征上的同名方法外，在你的类型上，也有同名方法：
+    trait Pilot {
+        fn fly(&self);
+    }
+
+    trait Wizard {
+        fn fly(&self);
+    }
+
+    struct Human;
+
+    impl Pilot for Human {
+        fn fly(&self) {
+            println!("This is your captain speaking.");
+        }
+    }
+
+    impl Wizard for Human {
+        fn fly(&self) {
+            println!("Up!");
+        }
+    }
+
+    impl Human {
+        fn fly(&self) {
+            println!("*waving arms furiously*");
+        }
+    }
+
+    // 优先调用类型上的方法
+    // 这段代码会打印 *waving arms furiously*，说明直接调用了类型上定义的方法。
+    let person = Human;
+    person.fly();
 }
