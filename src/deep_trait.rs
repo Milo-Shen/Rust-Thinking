@@ -169,4 +169,11 @@ pub fn deep_trait() {
     // 这段代码会打印 *waving arms furiously*，说明直接调用了类型上定义的方法。
     let person = Human;
     person.fly();
+
+    // 调用特征上的方法
+    // 为了能够调用两个特征的方法，需要使用显式调用的语法：
+    let person = Human;
+    Pilot::fly(&person); // 调用Pilot特征上的方法
+    Wizard::fly(&person); // 调用Wizard特征上的方法
+    person.fly(); // 调用Human类型自身的方法
 }
