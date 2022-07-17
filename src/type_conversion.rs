@@ -21,4 +21,14 @@ pub fn type_conversion() {
 
     // 强制类型转换的边角知识
     // 转换不具有传递性 就算 e as U1 as U2 是合法的，也不能说明 e as U2 是合法的（e 不能直接转换成 U2）。
+
+    // TryInto 转换
+    // 在一些场景中，使用 as 关键字会有比较大的限制。如果你想要在类型转换上拥有完全的控制而不依赖内置的转换，例如处理转换错误，那么可以使用 TryInto:
+
+    let a: u8 = 10;
+    let b: u16 = 1500;
+    let b_: u8 = b.try_into().unwrap();
+    if a < b_ {
+        println!("Ten is less than one hundred.");
+    }
 }
