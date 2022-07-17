@@ -26,7 +26,7 @@ pub fn type_conversion() {
     // 在一些场景中，使用 as 关键字会有比较大的限制。如果你想要在类型转换上拥有完全的控制而不依赖内置的转换，例如处理转换错误，那么可以使用 TryInto:
 
     let a: u8 = 10;
-    let b: u16 = 1500;
+    let b: u16 = 1;
     let b_: u8 = b.try_into().unwrap();
     if a < b_ {
         println!("Ten is less than one hundred.");
