@@ -59,4 +59,14 @@ pub fn type_conversion() {
         let Foo { x, y } = foo;
         Bar { a: x, b: y }
     }
+
+    // 强制类型转换
+    // 在某些情况下，类型是可以进行隐式强制转换的，虽然这些转换弱化了 Rust 的类型系统，但是它们的存在是为了让 Rust 在大多数场景可以工作(说白了，帮助用户省事)，而不是报各种类型上的编译错误。
+
+    trait Trait {}
+    fn foo<X: Trait>(t: X) {}
+    impl<'a> Trait for &'a i32 {}
+    let t = &mut 0;
+    // foo(t);
+    // &i32 实现了特征 Trait， &mut i32 可以转换为 &i32，但是 &mut i32 依然无法作为 Trait 来使用。
 }
