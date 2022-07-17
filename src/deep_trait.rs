@@ -176,4 +176,54 @@ pub fn deep_trait() {
     Pilot::fly(&person); // 调用Pilot特征上的方法
     Wizard::fly(&person); // 调用Wizard特征上的方法
     person.fly(); // 调用Human类型自身的方法
+
+    trait Animal {
+        fn baby_name() -> String;
+    }
+
+    struct Dog;
+
+    impl Dog {
+        fn baby_name() -> String {
+            String::from("Spot")
+        }
+    }
+
+    impl Animal for Dog {
+        fn baby_name() -> String {
+            String::from("puppy")
+        }
+    }
+
+    println!("A baby dog is called a {}", Dog::baby_name());
+
+    // 使用完全限定语法
+    // 通过 as 关键字，我们向 Rust 编译器提供了类型注解，也就是 Animal 就是 Dog
+    println!("A baby dog is called a {}", <Dog as Animal>::baby_name());
+    // 完全限定语法可以用于任何函数或方法调用，那么我们为何很少用到这个语法？原因是 Rust 编译器能根据上下文自动推导出调用的路径，因此大多数时候，我们都无需使用完全限定语法。只有当存在多个同名函数或方法，且 Rust 无法区分出你想调用的目标函数时，该用法才能真正有用武之地。
+
+    // 特征定义中的特征约束
+    // 有时，我们会需要让某个特征 A 能使用另一个特征 B 的功能(另一种形式的特征约束)，这种情况下，不仅仅要为类型实现特征 A，还要为类型实现特征 B 才行，这就是 supertrait
+    use std::fmt::Display;
+    trait OutlinePrint: Display {
+        fn outline_print(&self) {
+            let output = self.to_string();
+            let len = output.len();
+            println!("{}", "*".repeat(len + 4));
+            println!("*{}*", " ".repeat(len + 2));
+            println!("* {} *", output);
+            println!("*{}*", " ".repeat(len + 2));
+            println!("{}", "*".repeat(len + 4));
+        }
+    }
+
+    impl fmt::Display for Point {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            write!(f, "({}, {})", self.x, self.y)
+        }
+    }
+
+    impl OutlinePrint for Point {}
+    let c = Point { x: 1, y: 2 };
+    c.outline_print();
 }
