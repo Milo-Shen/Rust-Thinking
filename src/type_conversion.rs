@@ -31,4 +31,32 @@ pub fn type_conversion() {
     if a < b_ {
         println!("Ten is less than one hundred.");
     }
+
+    // try_into 转换会捕获大类型向小类型转换时导致的溢出错误：
+    let b: i16 = 1500;
+
+    let b_: u8 = match b.try_into() {
+        Ok(b1) => b1,
+        Err(e) => {
+            println!("{:?}", e.to_string());
+            0
+        }
+    };
+
+    // 通用类型转换
+    // 虽然 as 和 TryInto 很强大，但是只能应用在数值类型上，可是 Rust 有如此多的类型，想要为这些类型实现转换，我们需要另谋出路，先来看看在一个笨办法，将一个结构体转换为另外一个结构体：
+    struct Foo {
+        x: u32,
+        y: u16,
+    }
+
+    struct Bar {
+        a: u32,
+        b: u16,
+    }
+
+    fn reinterpret(foo: Foo) -> Bar {
+        let Foo { x, y } = foo;
+        Bar { a: x, b: y }
+    }
 }
