@@ -226,4 +226,9 @@ pub fn deep_trait() {
     impl OutlinePrint for Point {}
     let c = Point { x: 1, y: 2 };
     c.outline_print();
+
+    // 在外部类型上实现外部特征(newtype)
+    // 这里提供一个办法来绕过孤儿规则，那就是使用newtype 模式，简而言之：就是为一个元组结构体创建新类型。该元组结构体封装有一个字段，该字段就是希望实现特征的具体类型。
+    // newtype 不仅仅能实现以上的功能，而且它在运行时没有任何性能损耗，因为在编译期，该类型会被自动忽略。
+    // 下面来看一个例子，我们有一个动态数组类型： Vec<T>，它定义在标准库中，还有一个特征 Display，它也定义在标准库中，如果没有 newtype，我们是无法为 Vec<T> 实现 Display 的：
 }
