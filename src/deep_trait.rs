@@ -242,4 +242,7 @@ pub fn deep_trait() {
 
     let w = Wrapper(vec![String::from("hello"), String::from("world")]);
     println!("w = {}", w);
+
+    // 当然，解决办法还是有的，要不怎么说 Rust 是极其强大灵活的编程语言！Rust 提供了一个特征叫 Deref，实现该特征后，可以自动做一层类似类型转换的操作，可以将 Wrapper 变成 Vec<String> 来使用。这样就会像直接使用数组那样去使用 Wrapper，而无需为每一个操作都添加上 self.0。
+    // 同时，如果不想 Wrapper 暴漏底层数组的所有方法，我们还可以为 Wrapper 去重载这些方法，实现隐藏的目的。
 }
