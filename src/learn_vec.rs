@@ -26,4 +26,35 @@ pub fn learn_vec() {
     for ip in v {
         show_addr(ip)
     }
+
+    // 再来看看特征对象的实现：
+    trait IpAddrT {
+        fn display(&self);
+    }
+
+    struct V4(String);
+    impl IpAddrT for V4 {
+        fn display(&self) {
+            println!("ipv4: {:?}", self.0)
+        }
+    }
+    struct V6(String);
+    impl IpAddrT for V6 {
+        fn display(&self) {
+            println!("ipv6: {:?}", self.0)
+        }
+    }
+
+    let v: Vec<Box<dyn IpAddrT>> = vec![
+        Box::new(V4("127.0.0.1".to_string())),
+        Box::new(V6("::1".to_string())),
+    ];
+
+    for ip in v {
+        ip.display();
+    }
+
+    //比枚举实现要稍微复杂一些，我们为 V4 和 V6 都实现了特征 IpAddr，然后将它俩的实例用 Box::new 包裹后，存在了数组 v 中。
+    // 需要注意的是，这里必需手动的指定类型：Vec<Box<dyn IpAddr>>，表示数组 v 存储的是特征 IpAddr 的对象，这样就实现了在数组中存储不同的类型。
+    // 在实际使用场景中，特征对象数组要比枚举数组常见很多，主要原因在于特征对象非常灵活，而编译器对枚举的限制较多，且无法动态增加类型。
 }
