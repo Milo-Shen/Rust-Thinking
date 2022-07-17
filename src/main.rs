@@ -20,6 +20,7 @@ mod reference;
 mod statements_expressions;
 mod trait_obj;
 mod tuple;
+mod type_conversion;
 
 fn main() {
     println!("learn destructuring_assignment");
@@ -85,4 +86,7 @@ fn main() {
 
     println!("learn hashmap");
     hash_map::hash_map();
+
+    println!("learn type conversion");
+    type_conversion::type_conversion();
 }
