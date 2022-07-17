@@ -7,6 +7,7 @@ mod generics;
 mod learn_string;
 mod learn_struct;
 mod learn_trait;
+mod learn_vec;
 mod method;
 mod option;
 mod pattern_matching_1;
@@ -77,4 +78,7 @@ fn main() {
 
     println!("learn deep trait");
     deep_trait::deep_trait();
+
+    println!("learn vec");
+    learn_vec::learn_vec();
 }
