@@ -4,6 +4,7 @@ mod complex_types;
 mod deep_trait;
 mod destructuring_assignment;
 mod generics;
+mod hash_map;
 mod learn_string;
 mod learn_struct;
 mod learn_trait;
@@ -81,4 +82,7 @@ fn main() {
 
     println!("learn vec");
     learn_vec::learn_vec();
+
+    println!("learn hashmap");
+    hash_map::hash_map();
 }
