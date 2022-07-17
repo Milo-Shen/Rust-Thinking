@@ -18,4 +18,7 @@ pub fn type_conversion() {
         *p2 += 1;
     }
     assert_eq!(values[1], 3);
+
+    // 强制类型转换的边角知识
+    // 转换不具有传递性 就算 e as U1 as U2 是合法的，也不能说明 e as U2 是合法的（e 不能直接转换成 U2）。
 }
