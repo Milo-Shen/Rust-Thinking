@@ -1,4 +1,4 @@
-use std::rc::Rc;
+use std::{rc::Rc, sync::Arc};
 
 pub fn type_conversion() {
     // 每个类型能表达的数据范围不同，如果把范围较大的类型转换成较小的类型，会造成错误，因此我们需要把范围较小的类型转换成较大的类型，来避免这些问题的发生。
@@ -103,4 +103,36 @@ pub fn type_conversion() {
     // 接着编译器尝试引用方法调用，此时 T 变成 &T，在这种情况下， clone 方法的签名如下： fn clone(&&T) -> &T，接着我们现在对 value 进行了引用。
     // 编译器发现 &T 实现了 Clone 类型(所有的引用类型都可以被复制，因为其实就是复制一份地址)，因此可以推出 cloned 也是 &T 类型。
     // 最终，我们复制出一份引用指针，这很合理，因为值类型 T 没有实现 Clone，只能去复制一个指针了。
+
+    // 下面的例子也是自动引用生效的地方：
+    #[derive(Clone)]
+    struct Container<T>(Arc<T>);
+
+    fn clone_containers<T>(foo: &Container<i32>, bar: &Container<T>) {
+        let foo_cloned = foo.clone();
+        let bar_cloned = bar.clone();
+    }
+    // 推断下上面的 foo_cloned 和 bar_cloned 是什么类型？提示: 关键在 Container 的泛型参数，一个是 i32 的具体类型，一个是泛型类型，其中 i32 实现了 Clone，但是 T 并没有。
+    // 首先要复习一下复杂类型派生 Clone 的规则：一个复杂类型能否派生 Clone，需要它内部的所有子类型都能进行 Clone。因此 Container<T>(Arc<T>) 是否实现 Clone 的关键在于 T 类型是否实现了 Clone 特征。
+    // 上面代码中，Container<i32> 实现了 Clone 特征，因此编译器可以直接进行值方法调用，此时相当于直接调用 foo.clone，其中 clone 的函数签名是 fn clone(&T) -> T，由此可以看出 foo_cloned 的类型是 Container<i32>。
+    // 然而，bar_cloned 的类型却是 &Container<T>，这个不合理啊，明明我们为 Container<T> 派生了 Clone 特征，因此它也应该是 Container<T> 类型才对。万事皆有因，我们先来看下 derive 宏最终生成的代码大概是啥样的：
+    // impl<T> Clone for Container<T>
+    // where
+    //     T: Clone,
+    // {
+    //     fn clone(&self) -> Self {
+    //         Self(Arc::clone(&self.0))
+    //     }
+    // }
+
+    // 从上面代码可以看出，派生 Clone 能实现的根本是 T 实现了Clone特征：where T: Clone， 因此 Container<T> 就没有实现 Clone 特征。
+    // 编译器接着会去尝试引用方法调用，此时 &Container<T> 引用实现了 Clone，最终可以得出 bar_cloned 的类型是 &Container<T>。
+
+    // 当然，也可以为 Container<T> 手动实现 Clone 特征：
+    // impl<T> Clone for Container<T> {
+    //     fn clone(&self) -> Self {
+    //         Self(Arc::clone(&self.0))
+    //     }
+    // }
+    // 此时，编译器首次尝试值方法调用即可通过，因此 bar_cloned 的类型变成 Container<T>。
 }
