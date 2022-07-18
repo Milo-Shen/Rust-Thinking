@@ -17,6 +17,7 @@ mod pattern_matching_3;
 mod pattern_matching_4;
 mod process_control;
 mod reference;
+mod return_values_and_error_handling;
 mod statements_expressions;
 mod trait_obj;
 mod tuple;
@@ -89,4 +90,7 @@ fn main() {
 
     println!("learn type conversion");
     type_conversion::type_conversion();
+
+    println!("learn return_values_and_error_handling");
+    return_values_and_error_handling::return_values_and_error_handling();
 }
