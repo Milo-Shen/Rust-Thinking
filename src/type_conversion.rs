@@ -135,4 +135,31 @@ pub fn type_conversion() {
     //     }
     // }
     // 此时，编译器首次尝试值方法调用即可通过，因此 bar_cloned 的类型变成 Container<T>。
+
+    // 将裸指针变成函数指针：
+
+    fn fooo() -> i32 {
+        0
+    }
+
+    let pointer = fooo as *const ();
+    let function = unsafe {
+        // 将裸指针转换为函数指针
+        std::mem::transmute::<*const (), fn() -> i32>(pointer)
+    };
+    assert_eq!(function(), 0);
+
+    // 延长生命周期，或者缩短一个静态生命周期寿命：
+    struct R<'a>(&'a i32);
+
+    // 将 'b 生命周期延长至 'static 生命周期
+    unsafe fn extend_lifetime<'b>(r: R<'b>) -> R<'static> {
+        std::mem::transmute::<R<'b>, R<'static>>(r)
+    }
+
+    // 将 'static 生命周期缩短至 'c 生命周期
+    unsafe fn shorten_invariant_lifetime<'b, 'c>(r: &'b mut R<'static>) -> &'b mut R<'c> {
+        std::mem::transmute::<&'b mut R<'static>, &'b mut R<'c>>(r)
+    }
+    // 以上例子非常先进！但是是非常不安全的 Rust 行为！
 }
