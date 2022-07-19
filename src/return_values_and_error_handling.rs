@@ -11,4 +11,10 @@ pub fn return_values_and_error_handling() {
     // panic 时的两种终止方式
     // [profile.release]
     // panic = 'abort'
+
+    // 线程 panic 后，程序是否会终止？
+    // 长话短说，如果是 main 线程，则程序会终止，如果是其它子线程，该线程会终止，但是不会影响 main 线程。因此，尽量不要在 main 线程中做太多任务，将这些任务交由子线程去做，就算子线程 panic 也不会导致整个程序的结束。
+
+    // panic 原理剖析
+    // 当调用 panic! 宏时，它会 :
 }
