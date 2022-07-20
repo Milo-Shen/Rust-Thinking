@@ -112,4 +112,22 @@ pub fn return_values_and_error_handling() {
         f.read_to_string(&mut s)?;
         Ok(s)
     }
+
+    // 如果结果是 Ok(T)，则把 T 赋值给 f，如果结果是 Err(E)，则返回该错误，所以 ? 特别适合用来传播错误。
+    // 虽然 ? 和 match 功能一致，但是事实上 ? 会更胜一筹。何解？
+    // 想象一下，一个设计良好的系统中，肯定有自定义的错误特征，错误之间很可能会存在上下级关系，例如标准库中的 std::io::Error 和 std::error::Error，前者是 IO 相关的错误结构体，后者是一个最最通用的标准错误特征，同时前者实现了后者，因此 std::io::Error 可以转换为 std:error::Error。
+    // 明白了以上的错误转换，? 的更胜一筹就很好理解了，它可以自动进行类型提升（转换）：
+    fn open_file() -> Result<File, Box<dyn std::error::Error>> {
+        let mut f = File::open("hello.txt")?;
+        Ok(f)
+    }
+
+    // 上面代码中 File::open 报错时返回的错误是 std::io::Error 类型，但是 open_file 函数返回的错误类型是 std::error::Error 的特征对象，可以看到一个错误类型通过 ? 返回后，变成了另一个错误类型，这就是 ? 的神奇之处。
+    // 根本原因是在于标准库中定义的 From 特征，该特征有一个方法 from，用于把一个类型转成另外一个类型，? 可以自动调用该方法，然后进行隐式类型转换。因此只要函数返回的错误 ReturnError 实现了 From<OtherError> 特征，那么 ? 就会自动把 OtherError 转换为 ReturnError。
+    // 这种转换非常好用，意味着你可以用一个大而全的 ReturnError 来覆盖所有错误类型，只需要为各种子错误类型实现这种转换即可。
+    fn read_username_from_file_2() -> Result<String, io::Error> {
+        let mut s = String::new();
+        File::open("hello.txt")?.read_to_string(&mut s)?;
+        Ok(s)
+    }
 }
