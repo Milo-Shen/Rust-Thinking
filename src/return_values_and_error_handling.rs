@@ -66,4 +66,11 @@ pub fn return_values_and_error_handling() {
     // 上面代码在匹配出 error 后，又对 error 进行了详细的匹配解析，最终结果：
     // 如果是文件不存在错误 ErrorKind::NotFound，就创建文件，这里创建文件File::create 也是返回 Result，因此继续用 match 对其结果进行处理：创建成功，将新的文件句柄赋值给 f，如果失败，则 panic
     // 剩下的错误，一律 panic
+
+    // 失败就 panic: unwrap 和 expect
+    // 在不需要处理错误的场景，例如写原型、示例时，我们不想使用 match 去匹配 Result<T, E> 以获取其中的 T 值，因为 match 的穷尽匹配特性，你总要去处理下 Err 分支。那么有没有办法简化这个过程？有，答案就是 unwrap 和 expect。
+    let f = File::open("hello.txt").unwrap();
+
+    // expect 跟 unwrap 很像，也是遇到错误直接 panic, 但是会带上自定义的错误提示信息，相当于重载了错误打印的函数：
+    let f = File::open("hello.txt").expect("Failed to open hello.txt");
 }
