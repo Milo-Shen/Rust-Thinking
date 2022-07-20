@@ -153,4 +153,5 @@ pub fn return_values_and_error_handling() {
         text.lines().next()?.chars().last()
     }
     // 上面代码展示了在链式调用中使用 ? 提前返回 None 的用法， .next 方法返回的是 Option 类型：如果返回 Some(&str)，那么继续调用 chars 方法,如果返回 None，则直接从整个函数中返回 None，不再继续进行链式调用。
+    // 这样就能使用 ? 提前返回了，同时我们又一次看到了Box<dyn Error> 特征对象，因为 std::error:Error 是 Rust 中抽象层次最高的错误，其它标准库中的错误都实现了该特征，因此我们可以用该特征对象代表一切错误，就算 main 函数中调用任何标准库函数发生错误，都可以通过 Box<dyn Error> 这个特征对象进行返回.
 }
