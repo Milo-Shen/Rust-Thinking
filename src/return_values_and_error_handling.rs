@@ -103,4 +103,13 @@ pub fn return_values_and_error_handling() {
         // 该函数返回一个 Result<String, io::Error> 类型，当读取用户名成功时，返回 Ok(String)，失败时，返回 Err(io:Error)
         // File::open 和 f.read_to_string 返回的 Result<T, E> 中的 E 就是 io::Error
     }
+
+    // 但是上面的代码也有自己的问题，那就是太长了(优秀的程序员身上的优点极多，其中最大的优点就是懒)，我自认为也有那么一点点优秀，因此见不得这么啰嗦的代码，下面咱们来讲讲如何简化它。
+    // 传播界的大明星: ?
+    fn read_username_from_file_1() -> Result<String, io::Error> {
+        let mut f = File::open("hello.txt")?;
+        let mut s = String::new();
+        f.read_to_string(&mut s)?;
+        Ok(s)
+    }
 }
