@@ -1,4 +1,7 @@
-use std::{fs::File, io::ErrorKind};
+use std::{
+    fs::File,
+    io::{self, ErrorKind, Read},
+};
 
 pub fn return_values_and_error_handling() {
     // 可恢复错误，通常用于从系统全局角度来看可以接受的错误，例如处理用户的访问、操作等错误，这些错误只会影响某个用户自身的操作进程，而不会对系统的全局稳定性产生影响
@@ -73,4 +76,31 @@ pub fn return_values_and_error_handling() {
 
     // expect 跟 unwrap 很像，也是遇到错误直接 panic, 但是会带上自定义的错误提示信息，相当于重载了错误打印的函数：
     let f = File::open("hello.txt").expect("Failed to open hello.txt");
+
+    // 传播错误
+    // 咱们的程序几乎不太可能只有 A->B 形式的函数调用，一个设计良好的程序，一个功能涉及十几层的函数调用都有可能。而错误处理也往往不是哪里调用出错，就在哪里处理，实际应用中，大概率会把错误层层上传然后交给调用链的上游函数进行处理，错误传播将极为常见。
+    // 例如以下函数从文件中读取用户名，然后将结果进行返回：
+    fn read_username_from_file() -> Result<String, io::Error> {
+        // 打开文件，f是`Result<文件句柄,io::Error>`
+        let f = File::open("hello.txt");
+
+        let mut f = match f {
+            // 打开文件成功，将file句柄赋值给f
+            Ok(file) => file,
+            // 打开文件失败，将错误返回(向上传播)
+            Err(e) => return Err(e),
+        };
+        // 创建动态字符串 s
+        let mut s = String::new();
+        // 从f文件句柄读取数据并写入s中
+        match f.read_to_string(&mut s) {
+            // 读取成功，返回Ok封装的字符串
+            Ok(_) => Ok(s),
+            // 将错误向上传播
+            Err(e) => Err(e),
+        }
+        // 有几点值得注意：
+        // 该函数返回一个 Result<String, io::Error> 类型，当读取用户名成功时，返回 Ok(String)，失败时，返回 Err(io:Error)
+        // File::open 和 f.read_to_string 返回的 Result<T, E> 中的 E 就是 io::Error
+    }
 }
