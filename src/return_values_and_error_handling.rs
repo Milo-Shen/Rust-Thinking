@@ -137,4 +137,20 @@ pub fn return_values_and_error_handling() {
         fs::read_to_string("hello.txt")
     }
     // 从文件读取数据到字符串中，是比较常见的操作，因此 Rust 标准库为我们提供了 fs::read_to_string 函数，该函数内部会打开一个文件、创建 String、读取文件内容最后写入字符串并返回，因为该函数其实与本章讲的内容关系不大，因此放在最后来讲，其实只是我想震你们一下 :)
+
+    // ? 用于 Option 的返回
+    // ? 不仅仅可以用于 Result 的传播，还能用于 Option 的传播，再来回忆下 Option 的定义：
+    fn first(arr: &[i32]) -> Option<&i32> {
+        let v = arr.get(0)?;
+        Some(v)
+    }
+    // 其实这个函数有些画蛇添足，我们完全可以写出更简单的版本：
+    fn first_1(arr: &[i32]) -> Option<&i32> {
+        arr.get(0)
+    }
+
+    fn last_char_of_first_line(text: &str) -> Option<char> {
+        text.lines().next()?.chars().last()
+    }
+    // 上面代码展示了在链式调用中使用 ? 提前返回 None 的用法， .next 方法返回的是 Option 类型：如果返回 Some(&str)，那么继续调用 chars 方法,如果返回 None，则直接从整个函数中返回 None，不再继续进行链式调用。
 }
