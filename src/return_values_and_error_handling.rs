@@ -1,4 +1,4 @@
-use std::fs::File;
+use std::{fs::File, io::ErrorKind};
 
 pub fn return_values_and_error_handling() {
     // 可恢复错误，通常用于从系统全局角度来看可以接受的错误，例如处理用户的访问、操作等错误，这些错误只会影响某个用户自身的操作进程，而不会对系统的全局稳定性产生影响
@@ -51,4 +51,19 @@ pub fn return_values_and_error_handling() {
 
     // 对返回的错误进行处理
     // 直接 panic 还是过于粗暴，因为实际上 IO 的错误有很多种，我们需要对部分错误进行特殊处理，而不是所有错误都直接崩溃：
+
+    let f = File::open("hello.txt");
+    let _f = match f {
+        Ok(file) => file,
+        Err(error) => match error.kind() {
+            ErrorKind::NotFound => match File::create("hello.txt") {
+                Ok(fc) => fc,
+                Err(e) => panic!("Problem creating the file: {:?}", e),
+            },
+            other_error => panic!("Problem opening the file: {:?}", other_error),
+        },
+    };
+    // 上面代码在匹配出 error 后，又对 error 进行了详细的匹配解析，最终结果：
+    // 如果是文件不存在错误 ErrorKind::NotFound，就创建文件，这里创建文件File::create 也是返回 Result，因此继续用 match 对其结果进行处理：创建成功，将新的文件句柄赋值给 f，如果失败，则 panic
+    // 剩下的错误，一律 panic
 }
