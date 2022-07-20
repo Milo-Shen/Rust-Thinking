@@ -1,5 +1,5 @@
 use std::{
-    fs::File,
+    fs::{self, File},
     io::{self, ErrorKind, Read},
 };
 
@@ -130,4 +130,11 @@ pub fn return_values_and_error_handling() {
         File::open("hello.txt")?.read_to_string(&mut s)?;
         Ok(s)
     }
+    //  瞧见没？ ? 还能实现链式调用，File::open 遇到错误就返回，没有错误就将 Ok 中的值取出来用于下一个方法调用
+
+    fn read_username_from_file_3() -> Result<String, io::Error> {
+        // read_to_string是定义在std::io中的方法，因此需要在上面进行引用
+        fs::read_to_string("hello.txt")
+    }
+    // 从文件读取数据到字符串中，是比较常见的操作，因此 Rust 标准库为我们提供了 fs::read_to_string 函数，该函数内部会打开一个文件、创建 String、读取文件内容最后写入字符串并返回，因为该函数其实与本章讲的内容关系不大，因此放在最后来讲，其实只是我想震你们一下 :)
 }
