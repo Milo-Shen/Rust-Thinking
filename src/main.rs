@@ -10,6 +10,7 @@ mod learn_struct;
 mod learn_trait;
 mod learn_vec;
 mod method;
+mod notes_and_documentation;
 mod option;
 mod pattern_matching_1;
 mod pattern_matching_2;
@@ -93,4 +94,7 @@ fn main() {
 
     println!("learn return_values_and_error_handling");
     return_values_and_error_handling::return_values_and_error_handling();
+
+    println!("learn Notes and documentation");
+    notes_and_documentation::notes_and_documentation();
 }
