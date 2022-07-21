@@ -23,4 +23,28 @@ pub fn notes_and_documentation() {
     pub fn add_one(x: i32) -> i32 {
         x + 1
     }
+
+    // 以上代码有几点需要注意：
+    // 1. 文档注释需要位于 lib 类型的包中，例如 src/lib.rs 中
+    // 2. 文档注释可以使用 markdown语法！例如 # Examples 的标题，以及代码块高亮
+    // 3. 被注释的对象需要使用 pub 对外可见，记住：文档注释是给用户看的，内部实现细节不应该被暴露出去
+
+    // 文档块注释 /** ... */
+    /** `add_two` 将指定值加2
+    ```
+    let arg = 5;
+    let answer = my_crate::add_two(arg);
+
+    assert_eq!(7, answer);
+    ```
+    */
+    pub fn add_two(x: i32) -> i32 {
+        x + 2
+    }
+
+    // 常用文档标题
+    // 之前我们见到了在文档注释中该如何使用 markdown，其中包括 # Examples 标题。除了这个标题，还有一些常用的，你可以在项目中酌情使用：
+    // 1. Panics：函数可能会出现的异常状况，这样调用函数的人就可以提前规避
+    // 2. Errors：描述可能出现的错误及什么情况会导致错误，有助于调用者针对不同的错误采取不同的处理方式
+    // 3. Safety：如果函数使用 unsafe 代码，那么调用者就需要注意一些使用条件，以确保 unsafe 代码块的正常工作
 }
