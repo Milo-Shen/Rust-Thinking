@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 pub fn lifecycle() {
     // 生命周期标注语法
     // 生命周期标注并不会改变任何引用的实际作用域
