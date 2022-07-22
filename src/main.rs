@@ -9,6 +9,7 @@ mod learn_string;
 mod learn_struct;
 mod learn_trait;
 mod learn_vec;
+mod lifecycle;
 mod method;
 mod notes_and_documentation;
 mod option;
@@ -97,4 +98,7 @@ fn main() {
 
     println!("learn Notes and documentation");
     notes_and_documentation::notes_and_documentation();
+
+    println!("learn Life Cycle");
+    lifecycle::lifecycle();
 }
