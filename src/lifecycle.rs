@@ -47,4 +47,38 @@ pub fn lifecycle() {
     // 拥有 &self 形式的参数，说明该函数是一个 方法，该规则让方法的使用便利度大幅提升。
 
     // 规则其实很好理解，但是，爱思考的读者肯定要发问了，例如第三条规则，若一个方法，它的返回值的生命周期就是跟参数 &self 的不一样怎么办？总不能强迫我返回的值总是和 &self 活得一样久吧？! 问得好，答案很简单：手动标注生命周期，因为这些规则只是编译器发现你没有标注生命周期时默认去使用的，当你标注生命周期后，编译器自然会乖乖听你的话。
+
+    // 方法中的生命周期
+    struct ImportantExcerpt_1<'a> {
+        part: &'a str,
+    }
+
+    impl<'a> ImportantExcerpt_1<'a> {
+        fn level(&self) -> i32 {
+            3
+        }
+    }
+
+    // 其中有几点需要注意的：
+    // impl 中必须使用结构体的完整名称，包括 <'a>，因为生命周期标注也是结构体类型的一部分！
+    // 方法签名中，往往不需要标注生命周期，得益于生命周期消除的第一和第三规则
+
+    struct ImportantExcerpt_2<'a> {
+        part: &'a str,
+    }
+
+    // 有一点很容易推理出来：由于 &'a self 是被引用的一方，因此引用它的 &'b str 必须要活得比它短，否则会出现悬垂引用。因此说明生命周期 'b 必须要比 'a 小，只要满足了这一点，编译器就不会再报错：
+    impl<'a: 'b, 'b> ImportantExcerpt<'a> {
+        fn announce_and_return_part(&'a self, announcement: &'b str) -> &'b str {
+            println!("Attention please: {}", announcement);
+            self.part
+        }
+    }
+
+    impl<'a, 'b: 'a> ImportantExcerpt_2<'a> {
+        fn announce_and_return_part(&'a self, announcement: &'b str) -> &'a str {
+            println!("Attention please: {}", announcement);
+            announcement
+        }
+    }
 }
