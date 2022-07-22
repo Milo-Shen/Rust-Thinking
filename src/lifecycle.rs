@@ -67,6 +67,10 @@ pub fn lifecycle() {
         part: &'a str,
     }
 
+    struct ImportantExcerpt_3<'a> {
+        part: &'a str,
+    }
+
     // 有一点很容易推理出来：由于 &'a self 是被引用的一方，因此引用它的 &'b str 必须要活得比它短，否则会出现悬垂引用。因此说明生命周期 'b 必须要比 'a 小，只要满足了这一点，编译器就不会再报错：
     impl<'a: 'b, 'b> ImportantExcerpt<'a> {
         fn announce_and_return_part(&'a self, announcement: &'b str) -> &'b str {
@@ -79,6 +83,18 @@ pub fn lifecycle() {
         fn announce_and_return_part(&'a self, announcement: &'b str) -> &'a str {
             println!("Attention please: {}", announcement);
             announcement
+        }
+    }
+
+    // 'a: 'b，是生命周期约束语法，跟泛型约束非常相似，用于说明 'a 必须比 'b 活得久
+    // 可以把 'a 和 'b 都在同一个地方声明（如上），或者分开声明但通过 where 'a: 'b 约束生命周期关系，如下：
+    impl<'a> ImportantExcerpt_3<'a> {
+        fn announce_and_return_part<'b>(&'a self, announcement: &'b str) -> &'b str
+        where
+            'a: 'b,
+        {
+            println!("Attention please: {}", announcement);
+            self.part
         }
     }
 }
