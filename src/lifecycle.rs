@@ -107,4 +107,15 @@ pub fn lifecycle() {
     // 总结下：
     // 生命周期 'static 意味着能和程序活得一样久，例如字符串字面量和特征对象
     // 实在遇到解决不了的生命周期标注问题，可以尝试 T: 'static，有时候它会给你奇迹
+    fn longest_with_an_announcement<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
+    where
+        T: Display,
+    {
+        println!("Announcement! {}", ann);
+        if x.len() > y.len() {
+            x
+        } else {
+            y
+        }
+    }
 }
