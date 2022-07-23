@@ -24,6 +24,7 @@ mod process_control;
 mod reference;
 mod return_values_and_error_handling;
 mod statements_expressions;
+mod static_lifecycle;
 mod trait_obj;
 mod tuple;
 mod type_conversion;
@@ -113,4 +114,7 @@ fn main() {
 
     println!("learn deep life cycle example 2");
     lifecycle_exp_2::lifecycle_exp_2();
+
+    println!("learn static life cycle");
+    static_lifecycle::static_lifecycle();
 }
