@@ -52,4 +52,16 @@ pub fn deep_lifecycle() {
     }
     // let closure_slision = |x: &i32| -> &i32 { x };
     // 这个问题，可能很难被解决，建议大家遇到后，还是老老实实用正常的函数，不要秀闭包了。
+
+    // NLL (Non-Lexical Lifetime)
+    // 之前我们在引用与借用那一章其实有讲到过这个概念，简单来说就是：引用的生命周期正常来说应该从借用开始一直持续到作用域结束，但是这种规则会让多引用共存的情况变得更复杂：
+    let mut s = String::from("hello");
+
+    let r1 = &s;
+    let r2 = &s;
+    println!("{} and {}", r1, r2);
+    // 新编译器中，r1,r2作用域在这里结束
+
+    let r3 = &mut s;
+    println!("{}", r3);
 }
