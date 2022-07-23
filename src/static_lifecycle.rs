@@ -72,4 +72,36 @@ pub fn static_lifecycle() {
     }
     print_it2(&i);
     // 这段代码竟然不报错了！原因在于我们约束的是 T，但是使用的却是它的引用 &T，换而言之，我们根本没有直接使用 T，因此编译器就没有去检查 T 的生命周期约束！它只要确保 &T 的生命周期符合规则即可，在上面代码中，它自然是符合的。
+
+    fn static_bound<T: Display + 'static>(t: &T) {
+        println!("{}", t);
+    }
+    let r1;
+    let r2;
+    {
+        static STATIC_EXAMPLE: i32 = 42;
+        r1 = &STATIC_EXAMPLE;
+        let x = "&'static str";
+        r2 = x;
+        // r1 和 r2 持有的数据都是 'static 的，因此在花括号结束后，并不会被释放
+    }
+
+    println!("&'static i32: {}", r1); // -> 42
+    println!("&'static str: {}", r2); // -> &'static str
+
+    let r3: &str;
+
+    {
+        let s1 = "String".to_string();
+
+        // s1 虽然没有 'static 生命周期，但是它依然可以满足 T: 'static 的约束
+        // 充分说明这个约束是多么的弱。。
+        static_bound(&s1);
+
+        // s1 是 String 类型，没有 'static 的生命周期，因此下面代码会报错
+        // r3 = &s1;
+
+        // s1 在这里被 drop
+    }
+    // println!("{}", r3);
 }
