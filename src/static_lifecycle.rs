@@ -108,4 +108,12 @@ pub fn static_lifecycle() {
     // static 到底针对谁 ？
     // 大家有没有想过，到底是 &'static 这个引用还是该引用指向的数据活得跟程序一样久呢？
     // 答案是引用指向的数据，而引用本身是要遵循其作用域范围的，我们来简单验证下：
+    {
+        let static_string = "I'm in read-only memory";
+        println!("static_string: {}", static_string);
+
+        // 当 `static_string` 超出作用域时，该引用不能再被使用，但是数据依然会存在于 binary 所占用的内存中
+    }
+    // println!("static_string reference remains alive: {}", static_string);
+    // 以上代码不出所料会报错，原因在于虽然字符串字面量 "I'm in read-only memory" 的生命周期是 'static，但是持有它的引用并不是，它的作用域在内部花括号 } 处就结束了。
 }
