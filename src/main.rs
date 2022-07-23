@@ -1,6 +1,7 @@
 mod basic_types;
 mod char_bool_unit;
 mod complex_types;
+mod deep_lifecycle;
 mod deep_trait;
 mod destructuring_assignment;
 mod generics;
@@ -101,4 +102,7 @@ fn main() {
 
     println!("learn Life Cycle");
     lifecycle::lifecycle();
+
+    println!("learn deep life Cycle");
+    deep_lifecycle::deep_lifecycle();
 }
