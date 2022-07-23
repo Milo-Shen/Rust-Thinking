@@ -100,4 +100,23 @@ pub fn deep_lifecycle() {
 
     // 生命周期消除规则补充
     // 在上一节中，我们介绍了三大基础生命周期消除规则，实际上，随着 Rust 的版本进化，该规则也在不断演进，这里再介绍几个常见的消除规则：
+
+    // impl 块消除
+    trait Reader {}
+    struct BufReader<'a> {
+        a: &'a i32,
+    };
+    // impl<'a> Reader for BufReader<'a> {
+    //     // methods go here
+    //     // impl内部实际上没有用到'a
+    // }
+
+    // 如果你以前写的impl块长上面这样，同时在 impl 内部的方法中，根本就没有用到 'a，那就可以写成下面的代码形式
+
+    impl Reader for BufReader<'_> {
+        // methods go here
+    }
+
+    // '_ 生命周期表示 BufReader 有一个不使用的生命周期，我们可以忽略它，无需为它创建一个名称。
+    // 歪个楼，有读者估计会发问：既然用不到 'a，为何还要写出来？如果你仔细回忆下上一节的内容，里面有一句专门用粗体标注的文字：生命周期参数也是类型的一部分，因此 BufReader<'a> 是一个完整的类型，在实现它的时候，你不能把 'a 给丢了！
 }
