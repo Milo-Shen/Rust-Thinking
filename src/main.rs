@@ -1,5 +1,6 @@
 mod basic_types;
 mod char_bool_unit;
+mod closure;
 mod complex_types;
 mod deep_lifecycle;
 mod deep_trait;
@@ -117,4 +118,7 @@ fn main() {
 
     println!("learn static life cycle");
     static_lifecycle::static_lifecycle();
+
+    println!("learn closuree");
+    closure::closure();
 }
