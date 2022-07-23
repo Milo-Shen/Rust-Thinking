@@ -96,4 +96,8 @@ pub fn closure() {
     let random_number = 7;
     // 开始健身
     workout2(intensity, random_number);
+
+    // 上例中还有两点值得注意：
+    // 1. 闭包中最后一行表达式返回的值，就是闭包执行后的返回值，因此 action() 调用返回了 intensity 的值 10
+    // 2. let action = ||... 只是把闭包赋值给变量 action，并不是把闭包执行后的结果赋值给 action，因此这里 action 就相当于闭包函数，可以跟函数一样进行调用：action()
 }
