@@ -63,4 +63,12 @@ pub fn closure() {
             );
         }
     }
+
+    // 强度
+    let intensity = 10;
+    // 随机值用来决定某个选择
+    let random_number = 7;
+
+    // 开始健身
+    workout1(intensity, random_number);
 }
