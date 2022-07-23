@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::fmt::{Debug, Display};
 use std::{slice::from_raw_parts, str::from_utf8_unchecked};
 
 pub fn static_lifecycle() {
@@ -52,4 +52,24 @@ pub fn static_lifecycle() {
     // 2. 持有 &'static 引用的变量，它的生命周期受到作用域的限制，大家务必不要搞混了
 
     // T: 'static
+    // 相比起来，这种形式的约束就有些复杂了。
+    // 首先，在以下两种情况下，T: 'static 与 &'static 有相同的约束：T 必须活得和程序一样久。
+    fn print_it<T: Debug + 'static>(input: T) {
+        println!("'static value passed in is: {:?}", input);
+    }
+
+    fn print_it1(input: impl Debug + 'static) {
+        println!("'static value passed in is: {:?}", input);
+    }
+
+    let i = 5;
+    // print_it(&i);
+    // print_it1(&i);
+    // 以上代码会报错，原因很简单: &i 的生命周期无法满足 'static 的约束，如果大家将 i 修改为常量，那自然一切 OK。
+
+    fn print_it2<T: Debug + 'static>(input: &T) {
+        println!("'static value passed in is: {:?}", input);
+    }
+    print_it2(&i);
+    // 这段代码竟然不报错了！原因在于我们约束的是 T，但是使用的却是它的引用 &T，换而言之，我们根本没有直接使用 T，因此编译器就没有去检查 T 的生命周期约束！它只要确保 &T 的生命周期符合规则即可，在上面代码中，它自然是符合的。
 }
