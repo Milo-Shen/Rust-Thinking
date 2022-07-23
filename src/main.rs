@@ -12,6 +12,7 @@ mod learn_trait;
 mod learn_vec;
 mod lifecycle;
 mod lifecycle_exp_1;
+mod lifecycle_exp_2;
 mod method;
 mod notes_and_documentation;
 mod option;
@@ -109,4 +110,7 @@ fn main() {
 
     println!("learn deep life cycle example 1");
     lifecycle_exp_1::lifecycle_exp_1();
+
+    println!("learn deep life cycle example 2");
+    lifecycle_exp_2::lifecycle_exp_2();
 }
