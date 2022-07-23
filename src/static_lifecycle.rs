@@ -116,4 +116,12 @@ pub fn static_lifecycle() {
     }
     // println!("static_string reference remains alive: {}", static_string);
     // 以上代码不出所料会报错，原因在于虽然字符串字面量 "I'm in read-only memory" 的生命周期是 'static，但是持有它的引用并不是，它的作用域在内部花括号 } 处就结束了。
+
+    // 总结
+    // 总之， &'static 和 T: 'static 大体上相似，相比起来，后者的使用形式会更加复杂一些。
+    // 至此，相信大家对于 'static 和 T: 'static 也有了清晰的理解，那么我们应该如何使用它们呢？
+
+    // 作为经验之谈，可以这么来:
+    // 1. 如果你需要添加 &'static 来让代码工作，那很可能是设计上出问题了
+    // 2. 如果你希望满足和取悦编译器，那就使用 T: 'static，很多时候它都能解决问题
 }
