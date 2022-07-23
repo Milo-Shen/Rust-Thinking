@@ -46,4 +46,10 @@ pub fn static_lifecycle() {
     );
     // 如果大家想知道为何处理裸指针需要 `unsafe`，可以试着反注释以下代码
     // let message = get_str_at_location(1000, 10);
+
+    // 上面代码有两点值得注意：
+    // 1. &'static 的引用确实可以和程序活得一样久，因为我们通过 get_str_at_location 函数直接取到了对应的字符串
+    // 2. 持有 &'static 引用的变量，它的生命周期受到作用域的限制，大家务必不要搞混了
+
+    // T: 'static
 }
