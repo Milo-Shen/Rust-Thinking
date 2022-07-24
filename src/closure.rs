@@ -129,9 +129,48 @@ pub fn closure() {
     // 结构体中的闭包
     struct Cacher<T>
     where
-        T: Fn(u32) -> u32,
+        T: Fn(T) -> T,
     {
         query: T,
-        value: Option<u32>,
+        value: Option<T>,
     }
+    // 其实，可以看得出这一长串是 T 的特征约束，再结合之前的已知信息：query 是一个闭包，大概可以推测出，Fn(u32) -> u32 是一个特征，用来表示 T 是一个闭包类型？Bingo，恭喜你，答对了！
+    // 那为什么不用具体的类型来标注 query 呢？原因很简单，每一个闭包实例都有独属于自己的类型，即使于两个签名一模一样的闭包，它们的类型也是不同的，因此你无法用一个统一的类型来标注 query 闭包。
+    // 而标准库提供的 Fn 系列特征，再结合特征约束，就能很好的解决了这个问题. T: Fn(u32) -> u32 意味着 query 的类型是 T，该类型必须实现了相应的闭包特征 Fn(u32) -> u32。从特征的角度来看它长得非常反直觉，但是如果从闭包的角度来看又极其符合直觉，不得不佩服 Rust 团队的鬼才设计。。。
+    // 特征 Fn(u32) -> u32 从表面来看，就对闭包形式进行了显而易见的限制：该闭包拥有一个u32类型的参数，同时返回一个u32类型的值。
+    // 需要注意的是，其实 Fn 特征不仅仅适用于闭包，还适用于函数，因此上面的 query 字段除了使用闭包作为值外，还能使用一个具名的函数来作为它的值
+
+    struct Cacher1<T, E>
+    where
+        T: Fn(E) -> E,
+        E: Copy,
+    {
+        query: T,
+        value: Option<E>,
+    }
+
+    impl<T, E> Cacher1<T, E>
+    where
+        T: Fn(E) -> E,
+        E: Copy,
+    {
+        fn new(query: T) -> Cacher1<T, E> {
+            Cacher1 { query, value: None }
+        }
+
+        fn value(&mut self, arg: E) -> E {
+            match self.value {
+                Some(v) => v,
+                None => {
+                    let v = (self.query)(arg);
+                    self.value = Some(v);
+                    v
+                }
+            }
+        }
+    }
+    let mut c = Cacher1::new(|a| a);
+    let v1 = c.value(1);
+    let v2 = c.value(2);
+    assert_eq!(v2, 1);
 }
