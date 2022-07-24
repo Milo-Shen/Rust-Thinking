@@ -230,4 +230,20 @@ pub fn closure() {
     let d = |x: String| x + "a";
     let e = d(c);
     println!("{:?}", e);
+
+    // 2. FnMut，它以可变借用的方式捕获了环境中的值，因此可以修改该值：
+    // 想要在闭包内部捕获可变借用，需要把该闭包声明为可变类型，也就是 update_string 要修改为 mut update_string：
+    let mut s = String::new();
+    let mut update_string = |str| s.push_str(str);
+    update_string("hello");
+    println!("{:?}", s);
+
+    // 再来看一个复杂点的：
+    fn exec<'a, F: FnMut(&'a str)>(mut f: F) {
+        f("hello")
+    }
+    let mut s = String::new();
+    let update_string = |str| s.push_str(str);
+    exec(update_string);
+    println!("{:?}", s);
 }
