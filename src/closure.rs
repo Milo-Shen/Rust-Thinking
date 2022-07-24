@@ -225,4 +225,9 @@ pub fn closure() {
         println!("Here's a vector: {:?}", v);
     });
     handle.join().unwrap();
+
+    let c = String::from("Fn Once");
+    let d = |x: String| x + "a";
+    let e = d(c);
+    println!("{:?}", e);
 }
