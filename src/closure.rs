@@ -346,5 +346,5 @@ pub fn closure() {
 
     let answer = factory(1);
     let c = answer(1);
-    println!("{}", c)
+    println!("{}", c);
 }
