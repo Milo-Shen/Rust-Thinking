@@ -195,5 +195,18 @@ pub fn closure() {
         // println!("{}", func(4));
     }
     let x = vec![1, 2, 3];
-    fn_once(|z| z == x.len())
+    fn_once(|z| z == x.len());
+    println!("{:?}", x);
+
+    // 这里面有一个很重要的提示，因为 F 没有实现 Copy 特征，所以会报错，那么我们添加一个约束，试试实现了 Copy 的闭包：
+    fn fn_once1<F>(func: F)
+    where
+        F: FnOnce(usize) -> bool + Copy, // 改动在这里
+    {
+        println!("{}", func(3));
+        println!("{}", func(4));
+    }
+    let x = vec![1, 2, 3];
+    fn_once1(|z| z == x.len());
+    println!("{:?}", x);
 }
