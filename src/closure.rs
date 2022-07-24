@@ -119,4 +119,19 @@ pub fn closure() {
     add_one_v3(2);
     add_one_v4(2);
     // 可以看出第一行的函数和后面的闭包其实在形式上是非常接近的，同时三种不同的闭包也展示了三种不同的使用方式：省略参数、返回值类型和花括号对。
+
+    // 虽然类型推导很好用，但是它不是泛型，当编译器推导出一种类型后，它就会一直使用该类型：
+    let example_closure = |x| x;
+    let s = example_closure(String::from("hello"));
+    // let n = example_closure(5);
+    // 首先，在 s 中，编译器为 x 推导出类型 String，但是紧接着 n 试图用 5 这个整型去调用闭包，跟编译器之前推导的 String 类型不符，因此报错
+
+    // 结构体中的闭包
+    struct Cacher<T>
+    where
+        T: Fn(u32) -> u32,
+    {
+        query: T,
+        value: Option<u32>,
+    }
 }
