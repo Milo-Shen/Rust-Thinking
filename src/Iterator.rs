@@ -61,4 +61,10 @@ pub fn iterator() {
     for v in values.into_iter().into_iter().into_iter() {
         println!("{}", v)
     }
+
+    // into_iter, iter, iter_mut
+    // 在之前的代码中，我们统一使用了 into_iter 的方式将数组转化为迭代器，除此之外，还有 iter 和 iter_mut，聪明的读者应该大概能猜到这三者的区别：
+    // 1. into_iter 会夺走所有权
+    // 2. iter 是借用
+    // 3. iter_mut 是可变借用
 }
