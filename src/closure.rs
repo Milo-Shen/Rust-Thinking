@@ -320,4 +320,16 @@ pub fn closure() {
     //     s
     // };
     // exec_move(update_string);
+
+    fn exec_move<'a, F: FnMut(&'a str)>(mut f: F) {
+        f("hello");
+    }
+    let mut s = String::from("hello world");
+    let update_string = |str| {
+        s.push_str(str);
+    };
+    exec_move(update_string);
+    println!("{}", s);
+
+    // 从源码中还能看出一点：Fn 获取 &self，FnMut 获取 &mut self，而 FnOnce 获取 self。 在实际项目中，建议先使用 Fn 特征，然后编译器会告诉你正误以及该如何选择。
 }
