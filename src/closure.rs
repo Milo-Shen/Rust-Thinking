@@ -246,4 +246,13 @@ pub fn closure() {
     let update_string = |str| s.push_str(str);
     exec(update_string);
     println!("{:?}", s);
+
+    // Fn 特征，它以不可变借用的方式捕获环境中的值 让我们把上面的代码中 exec 的 F 泛型参数类型修改为 Fn(&'a str)：
+    fn exec1<'a, F: Fn(String) -> ()>(f: F) {
+        f("world".to_string())
+    }
+    let s = "hello, ".to_string();
+    let update_string = |str| println!("{},{}", s, str);
+    exec(update_string);
+    println!("{:?}", s);
 }
