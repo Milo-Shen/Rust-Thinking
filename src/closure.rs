@@ -199,6 +199,20 @@ pub fn closure() {
     fn_once(|z| z == x.len());
     println!("{:?}", x);
 
+    // 上面的 x 还能移动是因为实现了不可变借用, 而没有转移所有权
+    // 下面的 fn_once_1 是实实在在转移了所有权，所以 x 不能再用
+    fn fn_once_1<F>(func: F)
+    where
+        F: FnOnce() -> Vec<i32>,
+    {
+        println!("{:?}", func());
+        // 仅实现 FnOnce 特征的闭包在调用时会转移所有权，所以显然不能对已失去所有权的闭包变量进行二次调用：
+        // println!("{}", func(4));
+    }
+    let x = vec![1, 2, 3];
+    fn_once_1(|| x);
+    // println!("{:?}", x);
+
     // 这里面有一个很重要的提示，因为 F 没有实现 Copy 特征，所以会报错，那么我们添加一个约束，试试实现了 Copy 的闭包：
     fn fn_once1<F>(func: F)
     where
