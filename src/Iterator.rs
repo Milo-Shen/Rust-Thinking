@@ -157,4 +157,17 @@ pub fn iterator() {
     ];
     let processed_shoe = shoes_in_size(shoe_vec, 1);
     println!("{:?}", processed_shoe);
+
+    // 实现 Iterator 特征
+    // 之前的内容我们一直基于数组来创建迭代器，实际上，不仅仅是数组，基于其它集合类型一样可以创建迭代器，例如 HashMap。 你也可以创建自己的迭代器 —— 只要为自定义类型实现 Iterator 特征即可。
+    // 首先，创建一个计数器 :
+    struct Counter {
+        count: u32,
+    }
+
+    impl Counter {
+        fn new() -> Counter {
+            Counter { count: 0 }
+        }
+    }
 }
