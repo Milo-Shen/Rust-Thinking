@@ -173,4 +173,11 @@ pub fn closure() {
     let v1 = c.value(1);
     let v2 = c.value(2);
     assert_eq!(v2, 1);
+
+    // 捕获作用域中的值
+    // 在之前代码中，我们一直在用闭包的匿名函数特性（赋值给变量），然而闭包还拥有一项函数所不具备的特性：捕获作用域中的值。
+    let x = 4;
+    let equal_to_x = |z| z == x;
+    let y = 4;
+    assert!(equal_to_x(y));
 }
