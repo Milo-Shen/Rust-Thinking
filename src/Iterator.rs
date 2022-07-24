@@ -35,4 +35,10 @@ pub fn iterator() {
     assert_eq!(arr_iter.next(), Some(2));
     assert_eq!(arr_iter.next(), Some(3));
     assert_eq!(arr_iter.next(), None);
+
+    // 果不其然，将 arr 转换成迭代器后，通过调用其上的 next 方法，我们获取了 arr 中的元素，有两点需要注意：
+    // 1. next 方法返回的是 Option 类型，当有值时返回 Some(i32)，无值时返回 None
+    // 2. 遍历是按照迭代器中元素的排列顺序依次进行的，因此我们严格按照数组中元素的顺序取出了 Some(1)，Some(2)，Some(3)
+    // 3. 手动迭代必须将迭代器声明为 mut 可变，因为调用 next 会改变迭代器其中的状态数据（当前遍历的位置等），而 for 循环去迭代则无需标注 mut，因为它会帮我们自动完成
+    // 4. 总之，next 方法对迭代器的遍历是消耗性的，每次消耗它一个元素，最终迭代器中将没有任何元素，只能返回 None。
 }
