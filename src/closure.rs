@@ -265,4 +265,34 @@ pub fn closure() {
     let s = String::new();
     let update_string = move || println!("{}", s);
     exec2(update_string);
+
+    // 我们在上面的闭包中使用了 move 关键字，所以我们的闭包捕获了它，但是由于闭包对 s 的使用仅仅是不可变借用，因此该闭包实际上还实现了 Fn 特征。
+    // 细心的读者肯定发现我在上段中使用了一个 还 字，这是什么意思呢？因为该闭包不仅仅实现了 FnOnce 特征，还实现了 Fn 特征，将代码修改成下面这样，依然可以编译：
+    fn exec3<F: Fn()>(f: F) {
+        f()
+    }
+
+    // 三种 Fn 的关系
+    // 实际上，一个闭包并不仅仅实现某一种 Fn 特征，规则如下：
+    // 1. 所有的闭包都自动实现了 FnOnce 特征，因此任何一个闭包都至少可以被调用一次
+    // 2. 没有移出所捕获变量的所有权的闭包自动实现了 FnMut 特征
+    // 3. 不需要对捕获变量进行改变的闭包自动实现了 Fn 特征
+    fn exec4<F: FnMut()>(mut f: F) {
+        f()
+    }
+
+    fn exec5<F: Fn()>(f: F) {
+        f()
+    }
+
+    fn exec6<F: FnOnce()>(f: F) {
+        f()
+    }
+    let s = String::from("hello world");
+
+    let update_string = || println!("{}", s);
+
+    exec4(update_string);
+    exec5(update_string);
+    exec6(update_string);
 }
