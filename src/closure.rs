@@ -192,6 +192,7 @@ pub fn closure() {
         F: FnOnce(usize) -> bool,
     {
         println!("{}", func(3));
+        // 仅实现 FnOnce 特征的闭包在调用时会转移所有权，所以显然不能对已失去所有权的闭包变量进行二次调用：
         // println!("{}", func(4));
     }
     let x = vec![1, 2, 3];
