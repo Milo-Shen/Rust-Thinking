@@ -54,5 +54,11 @@ pub fn iterator() {
             }
         },
     };
-    result
+
+    // IntoIterator 特征
+    // 其实有一个细节，由于 Vec 动态数组实现了 IntoIterator 特征，因此可以通过 into_iter 将其转换为迭代器，那如果本身就是一个迭代器，该怎么办？实际上，迭代器自身也实现了 IntoIterator，标准库早就帮我们考虑好了：
+    let values = vec![1, 2, 3];
+    for v in values.into_iter().into_iter().into_iter() {
+        println!("{}", v)
+    }
 }
