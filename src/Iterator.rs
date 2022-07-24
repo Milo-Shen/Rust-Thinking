@@ -11,4 +11,28 @@ pub fn iterator() {
     for i in 1..10 {
         println!("{}", i);
     }
+
+    // 直接对数值序列进行迭代，也是很常见的使用方式。
+    // IntoIterator 特征拥有一个 into_iter 方法，因此我们还可以显式的把数组转换成迭代器：
+    let arr = [1, 2, 3];
+    for v in arr.into_iter() {
+        println!("{}", v);
+    }
+
+    // 惰性初始化
+    // 在 for 循环之前，我们只是简单的创建了一个迭代器 v1_iter，此时不会发生任何迭代行为，只有在 for 循环开始后，迭代器才会开始迭代其中的元素，最后打印出来。
+    // 这种惰性初始化的方式确保了创建迭代器不会有任何额外的性能损耗，其中的元素也不会被消耗，只有使用到该迭代器的时候，一切才开始。
+    let v1 = vec![1, 2, 3];
+    let v1_iter = v1.iter();
+    for val in v1_iter {
+        println!("{}", val);
+    }
+
+    // 因此，之前问题的答案已经很明显：for 循环通过不停调用迭代器上的 next 方法，来获取迭代器中的元素。
+    let arr = [1, 2, 3];
+    let mut arr_iter = arr.into_iter();
+    assert_eq!(arr_iter.next(), Some(1));
+    assert_eq!(arr_iter.next(), Some(2));
+    assert_eq!(arr_iter.next(), Some(3));
+    assert_eq!(arr_iter.next(), None);
 }
