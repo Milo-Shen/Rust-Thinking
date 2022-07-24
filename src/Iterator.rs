@@ -92,4 +92,8 @@ pub fn iterator() {
     // 具体解释在代码注释中，就不再赘述，不过有两点需要注意的是：
     // 1 .iter() 方法实现的迭代器，调用 next 方法返回的类型是 Some(&T)
     // 2 .iter_mut() 方法实现的迭代器，调用 next 方法返回的类型是 Some(&mut T)，因此在 if let Some(v) = values_iter_mut.next() 中，v 的类型是 &mut i32，最终我们可以通过 *v = 0 的方式修改其值
+
+    // Iterator 和 IntoIterator 的区别
+    // 1. 这两个其实还蛮容易搞混的，但我们只需要记住，Iterator 就是迭代器特征，只有实现了它才能称为迭代器，才能调用 next。
+    // 2. 而 IntoIterator 强调的是某一个类型如果实现了该特征，它可以通过 into_iter，iter 等方法变成一个迭代器。
 }
