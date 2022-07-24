@@ -255,4 +255,14 @@ pub fn closure() {
     let update_string = |str| println!("{},{}", s, str);
     exec(update_string);
     println!("{:?}", s);
+
+    // move 和 Fn
+    // 在上面，我们讲到了 move 关键字对于 FnOnce 特征的重要性，但是实际上使用了 move 的闭包依然可能实现了 Fn 或 FnMut 特征。
+    // 因为，一个闭包实现了哪种 Fn 特征取决于该闭包如何使用被捕获的变量，而不是取决于闭包如何捕获它们。move 本身强调的就是后者，闭包如何捕获变量：
+    fn exec2<F: FnOnce()>(f: F) {
+        f()
+    }
+    let s = String::new();
+    let update_string = move || println!("{}", s);
+    exec2(update_string);
 }
