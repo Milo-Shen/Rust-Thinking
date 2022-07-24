@@ -311,13 +311,13 @@ pub fn closure() {
     exec6(update_string);
 
     // 没有移动被捕获变量的闭包实现了 FnMut (没有移出所捕获变量的所有权的闭包自动实现了 FnMut 特征)
-    fn exec_move<'a, F: FnMut(&'a str) -> String>(mut f: F) {
-        f("hello");
-    }
-    let mut s = String::new();
-    let update_string = |str| -> String {
-        s.push_str(str);
-        s
-    };
-    exec_move(update_string);
+    // fn exec_move<'a, F: FnMut(&'a str) -> String>(mut f: F) {
+    //     f("hello");
+    // }
+    // let mut s = String::new();
+    // let update_string = |str| -> String {
+    //     s.push_str(str);
+    //     s
+    // };
+    // exec_move(update_string);
 }
