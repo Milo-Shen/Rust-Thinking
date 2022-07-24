@@ -133,4 +133,28 @@ pub fn iterator() {
     println!("{:?}", folks);
     // zip 是一个迭代器适配器，它的作用就是将两个迭代器的内容压缩到一起，形成 Iterator<Item=(ValueFromA, ValueFromB)> 这样的新的迭代器，在此处就是形如 [(name1, age1), (name2, age2)] 的迭代器。
     // 然后再通过 collect 将新迭代器中(K, V) 形式的值收集成 HashMap<K, V>，同样的，这里必须显式声明类型，然后 HashMap 内部的 KV 类型可以交给编译器去推导，最终编译器会推导出 HashMap<&str, i32>，完全正确！
+
+    // 闭包作为适配器参数
+    // 之前的 map 方法中，我们使用闭包来作为迭代器适配器的参数，它最大的好处不仅在于可以就地实现迭代器中元素的处理，还在于可以捕获环境值:
+    #[derive(Debug)]
+    struct Shoe {
+        size: u32,
+        style: String,
+    }
+    fn shoes_in_size(shoes: Vec<Shoe>, shoe_size: u32) -> Vec<Shoe> {
+        shoes.into_iter().filter(|s| s.size == shoe_size).collect()
+    }
+    // filter 是迭代器适配器，用于对迭代器中的每个值进行过滤。 它使用闭包作为参数，该闭包的参数 s 是来自迭代器中的值，然后使用 s 跟外部环境中的 shoe_size 进行比较，若相等，则在迭代器中保留 s 值，若不相等，则从迭代器中剔除 s 值，最终通过 collect 收集为 Vec<Shoe> 类型。
+    let shoe_vec = vec![
+        Shoe {
+            size: 1,
+            style: String::from("shoe 1"),
+        },
+        Shoe {
+            size: 2,
+            style: String::from("shoe 2"),
+        },
+    ];
+    let processed_shoe = shoes_in_size(shoe_vec, 1);
+    println!("{:?}", processed_shoe);
 }
