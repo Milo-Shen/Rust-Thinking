@@ -330,6 +330,21 @@ pub fn closure() {
     };
     exec_move(update_string);
     println!("{}", s);
-
     // 从源码中还能看出一点：Fn 获取 &self，FnMut 获取 &mut self，而 FnOnce 获取 self。 在实际项目中，建议先使用 Fn 特征，然后编译器会告诉你正误以及该如何选择。
+
+    // 闭包作为函数返回值
+    // 看到这里，相信大家对于如何使用闭包作为函数参数，已经很熟悉了，但是如果要使用闭包作为函数返回值，该如何做 ？
+    fn factory(x: i32) -> Box<dyn Fn(i32) -> i32> {
+        let num = 5;
+
+        if x > 1 {
+            Box::new(move |x| x + num)
+        } else {
+            Box::new(move |x| x - num)
+        }
+    }
+
+    let answer = factory(1);
+    let c = answer(1);
+    println!("{}", c)
 }
