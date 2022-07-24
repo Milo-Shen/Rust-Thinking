@@ -1,3 +1,4 @@
+mod Iterator;
 mod basic_types;
 mod char_bool_unit;
 mod closure;
@@ -119,6 +120,9 @@ fn main() {
     println!("learn static life cycle");
     static_lifecycle::static_lifecycle();
 
-    println!("learn closuree");
+    println!("learn closure");
     closure::closure();
+
+    println!("learn iterator");
+    Iterator::iterator();
 }
