@@ -210,4 +210,12 @@ pub fn closure() {
     let x = vec![1, 2, 3];
     fn_once1(|z| z == x.len());
     println!("{:?}", x);
+
+    fn fn_once2<F>(func: F)
+    where
+        F: FnOnce(usize) -> bool + Copy, // 改动在这里
+    {
+        println!("{}", func(3));
+        println!("{}", func(4));
+    }
 }
