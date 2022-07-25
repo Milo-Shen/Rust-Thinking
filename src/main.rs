@@ -1,4 +1,3 @@
-mod Iterator;
 mod basic_types;
 mod char_bool_unit;
 mod closure;
@@ -8,6 +7,7 @@ mod deep_trait;
 mod destructuring_assignment;
 mod generics;
 mod hash_map;
+mod iterator;
 mod learn_string;
 mod learn_struct;
 mod learn_trait;
@@ -16,6 +16,7 @@ mod lifecycle;
 mod lifecycle_exp_1;
 mod lifecycle_exp_2;
 mod method;
+mod newtype_and_type_aliases;
 mod notes_and_documentation;
 mod option;
 mod pattern_matching_1;
@@ -124,5 +125,8 @@ fn main() {
     closure::closure();
 
     println!("learn iterator");
-    Iterator::iterator();
+    iterator::iterator();
+
+    println!("learn newtype_and_type_aliases");
+    newtype_and_type_aliases::newtype_and_type_aliases();
 }
