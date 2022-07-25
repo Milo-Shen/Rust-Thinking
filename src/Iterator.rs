@@ -195,4 +195,16 @@ pub fn iterator() {
     assert_eq!(counter.next(), Some(4));
     assert_eq!(counter.next(), Some(5));
     assert_eq!(counter.next(), None);
+
+    // 实现 Iterator 特征的其它方法
+    // 可以看出，实现自己的迭代器非常简单，但是 Iterator 特征中，不仅仅是只有 next 一个方法，那为什么我们只需要实现它呢？因为其它方法都具有默认实现，所以无需像 next 这样手动去实现，而且这些默认实现的方法其实都是基于 next 方法实现的。
+    // 下面的代码演示了部分方法的使用：
+    let sum: u32 = Counter::new()
+        .zip(Counter::new().skip(1))
+        .map(|(a, b)| a * b)
+        .filter(|x| x % 3 == 0)
+        .sum();
+    assert_eq!(18, sum);
+
+    // 其中 zip，map，filter 是迭代器适配器：
 }
