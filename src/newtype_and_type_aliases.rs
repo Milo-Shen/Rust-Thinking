@@ -48,4 +48,14 @@ pub fn newtype_and_type_aliases() {
     let d = calculate_distance(Meters(10), Meters(20));
     println!("{}", d);
     // 事实上，除了可读性外，还有一个极大的优点：如果给 calculate_distance 传一个其它的类型，例如 struct MilliMeters(u32);，该代码将无法编译。尽管 Meters 和 MilliMeters 都是对 u32 类型的简单包装，但是它们是不同的类型！
+
+    // 隐藏内部类型的细节
+    // 众所周知，Rust 的类型有很多自定义的方法，假如我们把某个类型传给了用户，但是又不想用户调用这些方法，就可以使用 newtype：
+    struct MilliMeters(u32);
+    let i: u32 = 2;
+    assert_eq!(i.pow(2), 4);
+    let n = MilliMeters(i);
+    // 下面的代码将报错，因为`Meters`类型上没有`pow`方法
+    // assert_eq!(n.pow(2), 4);
+    // 不过需要偷偷告诉你的是，这种方式实际上是掩耳盗铃，因为用户依然可以通过 n.0.pow(2) 的方式来调用内部类型的方法 :)
 }
