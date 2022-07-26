@@ -65,4 +65,7 @@ pub fn sized_dst() {
     // 正是因为 &str 的引用有了底层堆数据的明确信息，它才是固定大小类型。假设如果它没有这些信息呢？那它也将变成一个动态类型。因此，将动态数据固定化的秘诀就是使用引用指向这些动态数据，然后在引用中存储相关的内存位置、长度等信息。
 
     // 特征对象
+    // fn foobar_1(thing: &dyn MyThing) {}     // OK
+    // fn foobar_2(thing: Box<dyn MyThing>) {} // OK
+    // fn foobar_3(thing: MyThing) {}          // ERROR!
 }
