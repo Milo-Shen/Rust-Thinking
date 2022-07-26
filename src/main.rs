@@ -133,4 +133,6 @@ fn main() {
 
     println!("learn sized and dst");
     sized_dst::sized_dst();
+
+    println!("learn enumerations_and_integers");
 }
