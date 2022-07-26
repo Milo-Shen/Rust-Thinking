@@ -26,6 +26,7 @@ mod pattern_matching_4;
 mod process_control;
 mod reference;
 mod return_values_and_error_handling;
+mod sized_dst;
 mod statements_expressions;
 mod static_lifecycle;
 mod trait_obj;
@@ -129,4 +130,7 @@ fn main() {
 
     println!("learn newtype_and_type_aliases");
     newtype_and_type_aliases::newtype_and_type_aliases();
+
+    println!("learn sized and dst");
+    sized_dst::sized_dst();
 }
