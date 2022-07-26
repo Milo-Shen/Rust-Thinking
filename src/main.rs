@@ -7,7 +7,7 @@ mod deep_trait;
 mod destructuring_assignment;
 mod generics;
 mod hash_map;
-mod iterator;
+mod learn_iterator;
 mod learn_string;
 mod learn_struct;
 mod learn_trait;
@@ -126,7 +126,7 @@ fn main() {
     closure::closure();
 
     println!("learn iterator");
-    iterator::iterator();
+    learn_iterator::iterator();
 
     println!("learn newtype_and_type_aliases");
     newtype_and_type_aliases::newtype_and_type_aliases();
