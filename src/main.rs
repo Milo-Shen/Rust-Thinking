@@ -5,6 +5,7 @@ mod complex_types;
 mod deep_lifecycle;
 mod deep_trait;
 mod destructuring_assignment;
+mod enumerations_and_integers;
 mod generics;
 mod hash_map;
 mod learn_iterator;
@@ -135,4 +136,5 @@ fn main() {
     sized_dst::sized_dst();
 
     println!("learn enumerations_and_integers");
+    enumerations_and_integers::enumerations_and_integers();
 }
