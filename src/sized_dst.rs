@@ -68,4 +68,15 @@ pub fn sized_dst() {
     // fn foobar_1(thing: &dyn MyThing) {}     // OK
     // fn foobar_2(thing: Box<dyn MyThing>) {} // OK
     // fn foobar_3(thing: MyThing) {}          // ERROR!
+
+    // 总结：只能间接使用的 DST
+    // Rust 中常见的 DST 类型有: str、[T]、dyn Trait，它们都无法单独被使用，必须要通过引用或者 Box 来间接使用 。
+    // 我们之前已经见过，使用 Box 将一个没有固定大小的特征变成一个有固定大小的特征对象，那能否故技重施，将 str 封装成一个固定大小类型？留个悬念先，我们来看看 Sized 特征。
+
+    // Sized 特征
+    // 既然动态类型的问题这么大，那么在使用泛型时，Rust 如何保证我们的泛型参数是固定大小的类型呢？例如以下泛型函数：
+    fn generic<T>(t: T) {}
+
+    // 该函数很简单，就一个泛型参数 T，那么如何保证 T 是固定大小的类型？仔细回想下，貌似在之前的课程章节中，我们也没有做过任何事情去做相关的限制，那 T 怎么就成了固定大小的类型了？奥秘在于编译器自动帮我们加上了 Sized 特征约束：
+    fn generic1<T: Sized>(t: T) {}
 }
