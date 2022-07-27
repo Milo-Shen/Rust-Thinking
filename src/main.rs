@@ -8,6 +8,7 @@ mod destructuring_assignment;
 mod enumerations_and_integers;
 mod generics;
 mod hash_map;
+mod learn_box;
 mod learn_iterator;
 mod learn_string;
 mod learn_struct;
@@ -137,4 +138,7 @@ fn main() {
 
     println!("learn enumerations_and_integers");
     enumerations_and_integers::enumerations_and_integers();
+
+    println!("learn box");
+    learn_box::learn_box();
 }
