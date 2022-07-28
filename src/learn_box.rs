@@ -58,4 +58,33 @@ pub fn learn_box() {
     }
 
     // 只需要将 List 存储到堆上，然后使用一个智能指针指向它，即可完成从 DST 到 Sized 类型(固定大小类型)的华丽转变。
+    // 在 Rust 中，想实现不同类型组成的数组只有两个办法：枚举和特征对象，前者限制较多，因此后者往往是最常用的解决办法。
+    // 特征对象
+    trait Draw {
+        fn draw(&self);
+    }
+
+    struct Button {
+        id: u32,
+    }
+    impl Draw for Button {
+        fn draw(&self) {
+            println!("这是屏幕上第{}号按钮", self.id)
+        }
+    }
+
+    struct Select {
+        id: u32,
+    }
+
+    impl Draw for Select {
+        fn draw(&self) {
+            println!("这个选择框贼难用{}", self.id)
+        }
+    }
+
+    let elems: Vec<Box<dyn Draw>> = vec![Box::new(Button { id: 1 }), Box::new(Select { id: 2 })];
+    for e in elems {
+        e.draw()
+    }
 }
