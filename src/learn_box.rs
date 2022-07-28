@@ -107,4 +107,18 @@ pub fn learn_box() {
     // 以上代码有几个值得注意的点：
     // 1. 使用 & 借用数组中的元素，否则会报所有权错误
     // 2. 表达式不能隐式的解引用，因此必须使用 ** 做两次解引用，第一次将 &Box<i32> 类型转成 Box<i32>，第二次将 Box<i32> 转成 i32
+
+    // Box::leak
+    // Box 中还提供了一个非常有用的关联函数：Box::leak，它可以消费掉 Box 并且强制目标值从内存中泄漏，读者可能会觉得，这有啥用啊？
+    // 其实还真有点用，例如，你可以把一个 String 类型，变成一个 'static 生命周期的 &str 类型：
+    fn gen_static_str() -> &'static str {
+        let mut s = String::new();
+        s.push_str("hello, world");
+        Box::leak(s.into_boxed_str())
+    }
+    let s = gen_static_str();
+    println!("{}", s);
+    // 在之前的代码中，如果 String 创建于函数中，那么返回它的唯一方法就是转移所有权给调用者 fn move_str() -> String，而通过 Box::leak 我们不仅返回了一个 &str 字符串切片，它还是 'static 生命周期的！
+    // 要知道真正具有 'static 生命周期的往往都是编译期就创建的值，例如 let v = "hello, world"，这里 v 是直接打包到二进制可执行文件中的，因此该字符串具有 'static 生命周期，再比如 const 常量。
+    // 又有读者要问了，我还可以手动为变量标注 'static 啊。其实你标注的 'static 只是用来忽悠编译器的，但是超出作用域，一样被释放回收。而使用 Box::leak 就可以将一个运行期的值转为 'static。
 }
