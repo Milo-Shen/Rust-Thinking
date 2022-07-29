@@ -1,3 +1,5 @@
+use std::ops::Deref;
+
 pub fn learn_deref() {
     #[derive(Debug)]
     struct Person {
@@ -38,4 +40,33 @@ pub fn learn_deref() {
     let x = Box::new(1);
     let sum = *x + 1;
     println!("sum = {sum}");
+    // 智能指针 x 被 * 解引用为 i32 类型的值 1，然后再进行求和。
+
+    // 定义自己的智能指针
+    // 现在，让我们一起来实现一个智能指针，功能上类似 Box<T>。由于 Box<T> 本身很简单，并没有包含类如长度、最大长度等信息，因此用一个元组结构体即可。
+    struct MyBox<T>(T);
+
+    impl<T> MyBox<T> {
+        fn new(x: T) -> MyBox<T> {
+            MyBox(x)
+        }
+    }
+    // 跟 Box<T> 一样，我们的智能指针也持有一个 T 类型的值，然后使用关联函数 MyBox::new 来创建智能指针。由于还未实现 Deref 特征，此时使用 * 肯定会报错
+    // 为智能指针实现 Deref 特征
+
+    impl<T> Deref for MyBox<T> {
+        type Target = T;
+
+        fn deref(&self) -> &Self::Target {
+            &self.0
+        }
+    }
+
+    // 很简单，当解引用 MyBox 智能指针时，返回元组结构体中的元素 &self.0，有几点要注意的：
+    // 1. 在 Deref 特征中声明了关联类型 Target，在之前章节中介绍过，关联类型主要是为了提升代码可读性
+    // 2. deref 返回的是一个常规引用，可以被 * 进行解引用
+
+    // 之前报错的代码此时已能顺利编译通过。当然，标准库实现的智能指针要考虑很多边边角角情况，肯定比我们的实现要复杂。
+    let y = MyBox::new(5);
+    println!("y = {}", *y);
 }
