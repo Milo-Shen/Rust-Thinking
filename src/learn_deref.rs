@@ -74,4 +74,12 @@ pub fn learn_deref() {
     // 当我们对智能指针 Box 进行解引用时，实际上 Rust 为我们调用了以下方法：
     let c = *(y.deref());
     println!("c = {c}");
+
+    // 首先调用 deref 方法返回值的常规引用，然后通过 * 对常规引用进行解引用，最终获取到目标值。
+    // 至于 Rust 为何要使用这个有点啰嗦的方式实现，原因在于所有权系统的存在。如果 deref 方法直接返回一个值，而不是引用，那么该值的所有权将被转移给调用者，而我们不希望调用者仅仅只是 *T 一下，就拿走了智能指针中包含的值。
+    // 需要注意的是，* 不会无限递归替换，从 *y 到 *(y.deref()) 只会发生一次，而不会继续进行替换然后产生形如 *((y.deref()).deref()) 的怪物。
+
+    let s = MyBox::new(String::from("hello world"));
+    // move occurs because value has type `String`, which does not implement the `Copy` trait
+    // let mys = *s;
 }
