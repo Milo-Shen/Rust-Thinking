@@ -37,4 +37,5 @@ pub fn learn_deref() {
     // 实现 Deref 后的智能指针结构体，就可以像普通引用一样，通过 * 进行解引用，例如 Box<T> 智能指针：
     let x = Box::new(1);
     let sum = *x + 1;
+    println!("sum = {sum}");
 }
