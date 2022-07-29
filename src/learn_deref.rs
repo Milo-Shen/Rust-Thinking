@@ -82,4 +82,17 @@ pub fn learn_deref() {
     let s = MyBox::new(String::from("hello world"));
     // move occurs because value has type `String`, which does not implement the `Copy` trait
     // let mys = *s;
+
+    // 函数和方法中的隐式 Deref 转换
+    // 对于函数和方法的传参，Rust 提供了一个极其有用的隐式转换：Deref 转换。若一个类型实现了 Deref 特征，那它的引用在传给函数或方法时，会根据参数签名来决定是否进行隐式的 Deref 转换，例如：
+    fn display(s: &str) {
+        println!("{}", s);
+    }
+    let s = String::from("hello world");
+    display(&s);
+
+    // 以上代码有几点值得注意：
+    // 1. String 实现了 Deref 特征，可以在需要时自动被转换为 &str 类型
+    // 2. &s 是一个 &String 类型，当它被传给 display 函数时，自动通过 Deref 转换成了 &str
+    // 3. 必须使用 &s 的方式来触发 Deref(仅引用类型的实参才会触发自动解引用)
 }
