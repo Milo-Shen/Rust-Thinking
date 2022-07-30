@@ -95,4 +95,20 @@ pub fn learn_deref() {
     // 1. String 实现了 Deref 特征，可以在需要时自动被转换为 &str 类型
     // 2. &s 是一个 &String 类型，当它被传给 display 函数时，自动通过 Deref 转换成了 &str
     // 3. 必须使用 &s 的方式来触发 Deref(仅引用类型的实参才会触发自动解引用)
+
+    // 连续的隐式 Deref 转换
+    // 如果你以为 Deref 仅仅这点作用，那就大错特错了。Deref 可以支持连续的隐式转换，直到找到适合的形式为止：
+    let s = MyBox::new(String::from("hello world"));
+    display(&s);
+    // 这里我们使用了之前自定义的智能指针 MyBox，并将其通过连续的隐式转换变成 &str 类型：首先 MyBox 被 Deref 成 String 类型，结果并不能满足 display 函数参数的要求，编译器发现 String 还可以继续 Deref 成 &str，最终成功的匹配了函数参数。
+    // 想象一下，假如 Rust 没有提供这种隐式转换，我们该如何调用 display 函数？
+    let m = MyBox::new(String::from("Rust"));
+    display(&(*m)[..]);
+    // 结果不言而喻，肯定是 &s 的方式优秀得多。总之，当参与其中的类型定义了 Deref 特征时，Rust 会分析该类型并且连续使用 Deref 直到最终获得一个引用来匹配函数或者方法的参数类型，这种行为完全不会造成任何的性能损耗，因为完全是在编译期完成。
+    // 但是 Deref 并不是没有缺点，缺点就是：如果你不知道某个类型是否实现了 Deref 特征，那么在看到某段代码时，并不能在第一时间反应过来该代码发生了隐式的 Deref 转换。事实上，不仅仅是 Deref，在 Rust 中还有各种 From/Into 等等会给阅读代码带来一定负担的特征。还是那句话，一切选择都是权衡，有得必有失，得了代码的简洁性，往往就失去了可读性，Go 语言就是一个刚好相反的例子。
+    let s = MyBox::new(String::from("hello, world"));
+    let s1: &str = &s;
+    let s2: String = s.to_string();
+    // 对于 s1，我们通过两次 Deref 将 &str 类型的值赋给了它（赋值操作需要手动解引用）；
+    // 而对于 s2，我们在其上直接调用方法 to_string，实际上 MyBox 根本没有没有实现该方法，能调用 to_string，完全是因为编译器对 MyBox 应用了 Deref 的结果（方法调用会自动解引用）。
 }
