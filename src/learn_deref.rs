@@ -1,4 +1,4 @@
-use std::ops::Deref;
+use std::{ops::Deref, rc::Rc};
 
 pub fn learn_deref() {
     #[derive(Debug)]
@@ -116,4 +116,39 @@ pub fn learn_deref() {
     // 在上面，我们零碎的介绍了不少关于 Deref 特征的知识，下面来通过较为正式的方式来对其规则进行下总结。
     // 一个类型为 T 的对象 foo，如果 T: Deref<Target=U>，那么，相关 foo 的引用 &foo 在应用的时候会自动转换为 &U。
     // 粗看这条规则，貌似有点类似于 AsRef，而跟 解引用 似乎风马牛不相及，实际里面有些玄妙之处。
+
+    // 引用归一化
+    // Rust 编译器实际上只能对 &v 形式的引用进行解引用操作，那么问题来了，如果是一个智能指针或者 &&&&v 类型的呢？ 该如何对这两个进行解引用？
+    // 答案是：Rust 会在解引用时自动把智能指针和 &&&&v 做引用归一化操作，转换成 &v 形式，最终再对 &v 进行解引用：
+    // 1. 把智能指针（比如在库中定义的，Box、Rc、Arc、Cow 等）从结构体脱壳为内部的引用类型，也就是转成结构体内部的 &v
+    // 2. 把多重&，例如 &&&&&&&v，归一成 &v
+
+    // 例子1:
+    fn foo(s: &str) {}
+    // 由于 String 实现了 Deref<Target=str>
+    let owned = "Hello".to_string();
+    // 因此下面的函数可以正常运行：
+    foo(&owned);
+
+    // 例子2:
+    fn foo1(s: &str) {}
+    // String 实现了 Deref<Target=str>
+    let owned = "Hello".to_string();
+    // 且 Rc 智能指针可以被自动脱壳为内部的 `owned` 引用： &String ，然后 &String 再自动解引用为 &str
+    let counted = Rc::new(owned);
+    // 因此下面的函数可以正常运行:
+    foo1(&counted);
+
+    // 例子3:
+    struct Foo;
+    impl Foo {
+        fn foo(&self) {
+            println!("Foo");
+        }
+    }
+    let f = &&Foo;
+    f.foo();
+    (&f).foo();
+    (&&f).foo();
+    (&&&&&&&&f).foo();
 }
