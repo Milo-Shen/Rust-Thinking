@@ -10,6 +10,7 @@ mod generics;
 mod hash_map;
 mod learn_box;
 mod learn_deref;
+mod learn_drop;
 mod learn_iterator;
 mod learn_string;
 mod learn_struct;
@@ -145,4 +146,7 @@ fn main() {
 
     println!("learn deref");
     learn_deref::learn_deref();
+
+    println!("learn drop");
+    learn_drop::learn_drop();
 }
