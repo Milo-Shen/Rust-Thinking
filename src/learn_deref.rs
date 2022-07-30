@@ -1,4 +1,7 @@
-use std::{ops::Deref, rc::Rc};
+use std::{
+    ops::{Deref, DerefMut},
+    rc::Rc,
+};
 
 pub fn learn_deref() {
     #[derive(Debug)]
@@ -151,4 +154,43 @@ pub fn learn_deref() {
     (&f).foo();
     (&&f).foo();
     (&&&&&&&&f).foo();
+
+    // 三种 Deref 转换
+    // 在之前，我们讲的都是不可变的 Deref 转换，
+    // 实际上 Rust 还支持将一个可变的引用转换成另一个可变的引用以及将一个可变引用转换成不可变的引用，规则如下：
+    // 当 T: Deref<Target=U>，可以将 &T 转换成 &U，也就是我们之前看到的例子
+    // 当 T: DerefMut<Target=U>，可以将 &mut T 转换成 &mut U
+    // 当 T: Deref<Target=U>，可以将 &mut T 转换成 &U
+
+    // 来看一个关于 DerefMut 的例子：
+    struct MyBox1<T> {
+        v: T,
+    }
+    impl<T> MyBox1<T> {
+        fn new(x: T) -> MyBox1<T> {
+            MyBox1 { v: x }
+        }
+    }
+
+    impl<T> Deref for MyBox1<T> {
+        type Target = T;
+
+        fn deref(&self) -> &Self::Target {
+            &self.v
+        }
+    }
+
+    impl<T> DerefMut for MyBox1<T> {
+        fn deref_mut(&mut self) -> &mut Self::Target {
+            &mut self.v
+        }
+    }
+
+    fn display1(s: &mut String) {
+        s.push_str("world");
+        println!("{}", s);
+    }
+
+    let mut s = MyBox1::new(String::from("hello, "));
+    display1(&mut s);
 }
