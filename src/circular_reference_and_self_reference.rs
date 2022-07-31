@@ -1,4 +1,7 @@
-use std::{cell::RefCell, rc::Rc};
+use std::{
+    cell::RefCell,
+    rc::{Rc, Weak},
+};
 
 pub fn circular_reference_and_self_reference() {
     // 循环引用与自引用
@@ -70,4 +73,34 @@ pub fn circular_reference_and_self_reference() {
     // 不阻止值被释放(drop)	                            所有权计数归零，才能 drop
     // 引用的值存在返回 Some，不存在返回 None	          引用的值必定存在
     // 通过 upgrade 取到 Option<Rc<T>>，然后再取值	     通过 Deref 自动解引用，取值无需任何操作
+
+    // 通过这个对比，可以非常清晰的看出 Weak 为何这么弱，而这种弱恰恰非常适合我们实现以下的场景：
+    // 1. 持有一个 Rc 对象的临时引用，并且不在乎引用的值是否依然存在
+    // 2. 阻止 Rc 导致的循环引用，因为 Rc 的所有权机制，会导致多个 Rc 都无法计数归零
+
+    // 使用方式简单总结下：对于父子引用关系，可以让父节点通过 Rc 来引用子节点，然后让子节点通过 Weak 来引用父节点。
+
+    // Weak 总结
+    // 因为 Weak 本身并不是很好理解，因此我们再来帮大家梳理总结下，然后再通过一个例子，来彻底掌握。
+    // Weak 通过 use std::rc::Weak 来引入，它具有以下特点:
+    // 1. 可访问，但没有所有权，不增加引用计数，因此不会影响被引用值的释放回收
+    // 2. 可由 Rc<T> 调用 downgrade 方法转换成 Weak<T>
+    // 3. Weak<T> 可使用 upgrade 方法转换成 Option<Rc<T>>，如果资源已经被释放，则 Option 的值是 None
+    // 4. 常用于解决循环引用的问题
+    // 创建Rc，持有一个值5
+    let five = Rc::new(5);
+
+    // 通过Rc，创建一个Weak指针
+    let weak_five = Rc::downgrade(&five);
+
+    // Weak引用的资源依然存在，取到值5
+    let strong_five = weak_five.upgrade();
+    assert_eq!(*strong_five.unwrap(), 5);
+
+    // 手动释放资源`five`
+    drop(five);
+
+    // Weak引用的资源已不存在，因此返回None
+    let strong_five = weak_five.upgrade();
+    assert_eq!(strong_five, None);
 }
