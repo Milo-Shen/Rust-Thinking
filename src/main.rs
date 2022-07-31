@@ -29,6 +29,7 @@ mod pattern_matching_3;
 mod pattern_matching_4;
 mod process_control;
 mod rc_arc;
+mod refcell;
 mod reference;
 mod return_values_and_error_handling;
 mod sized_dst;
@@ -153,4 +154,7 @@ fn main() {
 
     println!("learn rc arc");
     rc_arc::Rc_Arc();
+
+    println!("learn refcell");
+    refcell::cell_refcell();
 }
