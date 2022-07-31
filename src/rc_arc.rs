@@ -49,4 +49,60 @@ pub fn Rc_Arc() {
     // 1. 由于变量 c 在语句块内部声明，当离开语句块时它会因为超出作用域而被释放，所以引用计数会减少 1，事实上这个得益于 Rc<T> 实现了 Drop 特征
     // 2. a、b、c 三个智能指针引用计数都是同样的，并且共享底层的数据，因此打印计数时用哪个都行
     // 3. 无法看到的是：当 a、b 超出作用域后，引用计数会变成 0，最终智能指针和它指向的底层字符串都会被清理释放
+
+    // 不可变引用
+    // 事实上，Rc<T> 是指向底层数据的不可变的引用，因此你无法通过它来修改数据，这也符合 Rust 的借用规则：要么存在多个不可变借用，要么只能存在一个可变借用。
+    // 但是实际开发中我们往往需要对数据进行修改，这时单独使用 Rc<T> 无法满足我们的需求，需要配合其它数据类型来一起使用，例如内部可变性的 RefCell<T> 类型以及互斥锁 Mutex<T>。
+    // 事实上，在多线程编程中，Arc 跟 Mutex 锁的组合使用非常常见，它们既可以让我们在不同的线程中共享数据，又允许在各个线程中对其进行修改。
+
+    // 一个综合例子
+    // 考虑一个场景，有很多小工具，每个工具都有自己的主人，但是存在多个工具属于同一个主人的情况，此时使用 Rc<T> 就非常适合：
+
+    struct Owner {
+        name: String,
+    }
+
+    struct Gadget {
+        id: i32,
+        owner: Rc<Owner>,
+    }
+
+    // 创建一个基于引用计数的 `Owner`.
+    let gadget_owner = Rc::new(Owner {
+        name: "Gadget Man".to_string(),
+    });
+
+    // 创建两个不同的工具，它们属于同一个主人
+    let gadget1 = Gadget {
+        id: 1,
+        owner: Rc::clone(&gadget_owner),
+    };
+    let gadget2 = Gadget {
+        id: 2,
+        owner: Rc::clone(&gadget_owner),
+    };
+
+    println!(
+        "当前对于 gadget_owner 强引用的数量 = {}",
+        Rc::strong_count(&gadget_owner)
+    );
+
+    // 释放掉第一个 `Rc<Owner>`
+    drop(gadget_owner);
+
+    println!(
+        "当前对于 gadget_owner 强引用的数量 = {}",
+        Rc::strong_count(&gadget1.owner)
+    );
+
+    // 尽管在上面我们释放了 gadget_owner，但是依然可以在这里使用 owner 的信息
+    // 原因是在 drop 之前，存在三个指向 Gadget Man 的智能指针引用，上面仅仅
+    // drop 掉其中一个智能指针引用，而不是 drop 掉 owner 数据，外面还有两个
+    // 引用指向底层的 owner 数据，引用计数尚未清零
+    // 因此 owner 数据依然可以被使用
+    println!("Gadget {} owned by {}", gadget1.id, gadget1.owner.name);
+    println!("Gadget {} owned by {}", gadget2.id, gadget2.owner.name);
+
+    // 在函数最后，`gadget1` 和 `gadget2` 也被释放，最终引用计数归零，随后底层
+    // 数据也被清理释放
 }
