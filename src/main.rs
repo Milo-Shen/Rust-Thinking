@@ -8,6 +8,7 @@ mod deep_trait;
 mod destructuring_assignment;
 mod enumerations_and_integers;
 mod generics;
+mod global_variable;
 mod hash_map;
 mod learn_box;
 mod learn_deref;
@@ -165,4 +166,7 @@ fn main() {
 
     println!("learn self_referential_struct");
     self_referential_struct::self_referential_struct();
+
+    println!("learn global variable");
+    global_variable::global_variable();
 }
