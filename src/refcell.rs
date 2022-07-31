@@ -153,4 +153,6 @@ pub fn cell_refcell() {
     };
 
     mq.send("hello, world".to_string());
+
+    // 这个 MQ 功能很弱，但是并不妨碍我们演示内部可变性的核心用法：通过包裹一层 RefCell，成功的让 &self 中的 msg_cache 成为一个可变值，然后实现对其的修改。
 }
