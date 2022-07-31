@@ -19,8 +19,9 @@ pub fn Rc_Arc() {
     // let b = Box::new(s);
     let a = Rc::new(String::from("hello, world"));
     let b = Rc::clone(&a);
+    let c = a.clone();
 
-    assert_eq!(2, Rc::strong_count(&a));
+    assert_eq!(3, Rc::strong_count(&a));
     assert_eq!(Rc::strong_count(&a), Rc::strong_count(&b))
 
     // 以上代码我们使用 Rc::new 创建了一个新的 Rc<String> 智能指针并赋给变量 a，该指针指向底层的字符串数据。
