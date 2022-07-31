@@ -94,4 +94,20 @@ pub fn cell_refcell() {
     // 2. RefCell 只是将借用规则从编译期推迟到程序运行期，并不能帮你绕过这个规则
     // 3. RefCell 适用于编译期误报或者一个引用被在多处代码使用、修改以至于难于管理借用关系时
     // 4. 使用 RefCell 时，违背借用规则会导致运行期的 panic
+
+    // 选择 Cell 还是 RefCell
+    // 根据本文的内容，我们可以大概总结下两者的区别：
+    // 1. Cell 只适用于 Copy 类型，用于提供值，而 RefCell 用于提供引用
+    // 2. Cell 不会 panic，而 RefCell 会
+
+    // 性能比较
+    // Cell 没有额外的性能损耗，例如以下两段代码的性能其实是一致的：
+    // code snipet 1
+    let x = Cell::new(1);
+    let y = &x;
+    let z = &x;
+    x.set(2);
+    y.set(3);
+    z.set(4);
+    println!("{}", x.get());
 }
