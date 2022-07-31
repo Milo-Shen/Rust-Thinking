@@ -33,6 +33,7 @@ mod rc_arc;
 mod refcell;
 mod reference;
 mod return_values_and_error_handling;
+mod self_referential_struct;
 mod sized_dst;
 mod statements_expressions;
 mod static_lifecycle;
@@ -161,4 +162,7 @@ fn main() {
 
     println!("learn circular reference and self-reference");
     circular_reference_and_self_reference::circular_reference_and_self_reference();
+
+    println!("learn self_referential_struct");
+    self_referential_struct::self_referential_struct();
 }
