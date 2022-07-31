@@ -1,4 +1,4 @@
-use std::cell::Cell;
+use std::cell::{Cell, RefCell};
 pub fn cell_refcell() {
     // Cell 和 RefCell
     // Rust 的编译器之严格，可以说是举世无双。特别是在所有权方面，Rust 通过严格的规则来保证所有权和借用的正确性，最终为程序的安全保驾护航。
@@ -74,4 +74,11 @@ pub fn cell_refcell() {
     // 借用规则有一个推论: 无法可变的借用一个不可变的值
 
     // 可以看出，Rc/Arc 和 RefCell 合在一起，解决了 Rust 中严苛的所有权和借用规则带来的某些场景下难使用的问题。但是它们并不是银弹，例如 RefCell 实际上并没有解决可变引用和引用可以共存的问题，只是将报错从编译期推迟到运行时，从编译器错误变成了 panic 异常：
+    let s = RefCell::new(String::from("hello, world"));
+    let s1 = s.borrow();
+    // let s2 = s.borrow_mut();
+
+    // println!("{},{}", s1, s2);
+    // 上面代码在编译期不会报任何错误，你可以顺利运行程序：
+    // 但是依然会因为违背了借用规则导致了运行期 panic，这非常像中国的天网，它也许会被罪犯蒙蔽一时，但是并不会被蒙蔽一世，任何导致安全风险的存在都将不能被容忍，法网恢恢，疏而不漏。
 }
