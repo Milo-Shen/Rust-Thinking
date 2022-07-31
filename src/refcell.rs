@@ -211,4 +211,27 @@ pub fn cell_refcell() {
     // 1. 从表面来看，它们带来的内存和 CPU 损耗都不大
     // 2. 但是由于 Rc 额外的引入了一次间接取值（*），在少数场景下可能会造成性能上的显著损失
     // 3. CPU 缓存可能也不够亲和
+
+    // 通过 Cell::from_mut 解决借用冲突
+    // 在 Rust 1.37 版本中新增了两个非常实用的方法：
+    // 1. Cell::from_mut，该方法将 &mut T 转为 &Cell<T>
+    // 2. Cell::as_slice_of_cells，该方法将 &Cell<[T]> 转为 &[Cell<T>]
+    fn is_even(i: i32) -> bool {
+        i % 2 == 0
+    }
+
+    fn retain_even(nums: &mut Vec<i32>) {
+        let slice: &[Cell<i32>] = Cell::from_mut(&mut nums[..]).as_slice_of_cells();
+
+        let mut i = 0;
+        for num in slice.iter().filter(|num| is_even(num.get())) {
+            slice[i].set(num.get());
+            i += 1;
+        }
+
+        nums.truncate(i);
+    }
+
+    // 此时代码将不会报错，因为 Cell 上的 set 方法获取的是不可变引用 pub fn set(&self, val: T)。
+    // 当然，以上代码的本质还是对 Cell 的运用，只不过这两个方法可以很方便的帮我们把 &mut [T] 类型转换成 &[Cell<T>] 类型。
 }
