@@ -15,4 +15,18 @@ pub fn self_referential_struct() {
     // };
 
     // 因为我们试图同时使用值和值的引用，最终所有权转移和借用一起发生了。所以，这个问题貌似并没有那么好解决，不信你可以回想下自己具有的知识，是否可以解决？
+
+    // 最简单的方式就是使用 Option 分两步来实现：
+    #[derive(Debug)]
+    struct WhatAboutThis<'a> {
+        name: String,
+        nickname: Option<&'a str>,
+    }
+    let mut tricky = WhatAboutThis {
+        name: "Annabelle".to_string(),
+        nickname: None,
+    };
+    tricky.nickname = Some(&tricky.name[..4]);
+
+    println!("{:?}", tricky);
 }
