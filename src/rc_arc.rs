@@ -22,7 +22,7 @@ pub fn Rc_Arc() {
     let c = a.clone();
 
     assert_eq!(3, Rc::strong_count(&a));
-    assert_eq!(Rc::strong_count(&a), Rc::strong_count(&b))
+    assert_eq!(Rc::strong_count(&a), Rc::strong_count(&b));
 
     // 以上代码我们使用 Rc::new 创建了一个新的 Rc<String> 智能指针并赋给变量 a，该指针指向底层的字符串数据。
     // 智能指针 Rc<T> 在创建时，还会将引用计数加 1，此时获取引用计数的关联函数 Rc::strong_count 返回的值将是 1。
@@ -32,4 +32,16 @@ pub fn Rc_Arc() {
     // 由于 a 和 b 是同一个智能指针的两个副本，因此通过它们两个获取引用计数的结果都是 2。
     // 不要被 clone 字样所迷惑，以为所有的 clone 都是深拷贝。这里的 clone 仅仅复制了智能指针并增加了引用计数，并没有克隆底层数据，因此 a 和 b 是共享了底层的字符串 s，这种复制效率是非常高的。当然你也可以使用 a.clone() 的方式来克隆，但是从可读性角度，我们更加推荐 Rc::clone 的方式。
     // 实际上在 Rust 中，还有不少 clone 都是浅拷贝，例如迭代器的克隆。
+
+    // 观察引用计数的变化
+    // 使用关联函数 Rc::strong_count 可以获取当前引用计数的值，我们来观察下引用计数如何随着变量声明、释放而变化：
+    let a = Rc::new(String::from("test ref counting"));
+    println!("count after creating a = {}", Rc::strong_count(&a));
+    let b = Rc::clone(&a);
+    println!("count after creating b = {}", Rc::strong_count(&a));
+    {
+        let c = Rc::clone(&a);
+        println!("count after creating c = {}", Rc::strong_count(&c));
+    }
+    println!("count after c goes out of scope = {}", Rc::strong_count(&a));
 }
