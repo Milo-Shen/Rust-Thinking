@@ -44,4 +44,9 @@ pub fn Rc_Arc() {
         println!("count after creating c = {}", Rc::strong_count(&c));
     }
     println!("count after c goes out of scope = {}", Rc::strong_count(&a));
+
+    // 有几点值得注意：
+    // 1. 由于变量 c 在语句块内部声明，当离开语句块时它会因为超出作用域而被释放，所以引用计数会减少 1，事实上这个得益于 Rc<T> 实现了 Drop 特征
+    // 2. a、b、c 三个智能指针引用计数都是同样的，并且共享底层的数据，因此打印计数时用哪个都行
+    // 3. 无法看到的是：当 a、b 超出作用域后，引用计数会变成 0，最终智能指针和它指向的底层字符串都会被清理释放
 }
