@@ -1,5 +1,6 @@
 mod basic_types;
 mod char_bool_unit;
+mod circular_reference_and_self_reference;
 mod closure;
 mod complex_types;
 mod deep_lifecycle;
@@ -157,4 +158,7 @@ fn main() {
 
     println!("learn refcell");
     refcell::cell_refcell();
+
+    println!("learn circular reference and self-reference");
+    circular_reference_and_self_reference::circular_reference_and_self_reference();
 }
