@@ -1,4 +1,7 @@
-use std::cell::{Cell, RefCell};
+use std::{
+    cell::{Cell, RefCell},
+    rc::Rc,
+};
 pub fn cell_refcell() {
     // Cell 和 RefCell
     // Rust 的编译器之严格，可以说是举世无双。特别是在所有权方面，Rust 通过严格的规则来保证所有权和借用的正确性，最终为程序的安全保驾护航。
@@ -155,4 +158,12 @@ pub fn cell_refcell() {
     mq.send("hello, world".to_string());
 
     // 这个 MQ 功能很弱，但是并不妨碍我们演示内部可变性的核心用法：通过包裹一层 RefCell，成功的让 &self 中的 msg_cache 成为一个可变值，然后实现对其的修改。
+
+    // Rc + RefCell 组合使用
+    // 在 Rust 中，一个常见的组合就是 Rc 和 RefCell 在一起使用，前者可以实现一个数据拥有多个所有者，后者可以实现数据的可变性：
+    let s = Rc::new(RefCell::new("我很善变，还拥有多个主人".to_string()));
+    let s1 = s.clone();
+    let s2 = s.clone();
+    s2.borrow_mut().push_str(", on yeah!");
+    println!("{:?}\n{:?}\n{:?}", s, s1, s2);
 }
