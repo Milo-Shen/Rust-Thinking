@@ -123,4 +123,34 @@ pub fn cell_refcell() {
     // 虽然性能一致，但代码 1 拥有代码 2 不具有的优势：它能编译成功:)
     // 与 Cell 的 zero cost 不同，RefCell 其实是有一点运行期开销的，原因是它包含了一个字大小的“借用状态”指示器，该指示器在每次运行时借用时都会被修改，进而产生一点开销。
     // 总之，当非要使用内部可变性时，首选 Cell，只有你的类型没有实现 Copy 时，才去选择 RefCell。
+
+    // 内部可变性
+    // 之前我们提到 RefCell 具有内部可变性，何为内部可变性？简单来说，对一个不可变的值进行可变借用，但这个并不符合 Rust 的基本借用规则：
+    let x = 5;
+    // let y = &mut x;
+    // 上面的代码会报错，因为我们不能对一个不可变的值进行可变借用，这会破坏 Rust 的安全性保证，相反，你可以对一个可变值进行不可变借用。原因是：当值不可变时，可能会有多个不可变的引用指向它，此时若将修改其中一个为可变的，会造成可变引用与不可变引用共存的情况；
+    // 而当值可变时，最多只会有一个可变引用指向它，将其修改为不可变，那么最终依然是只有一个不可变的引用指向它。
+    // 虽然基本借用规则是 Rust 的基石，然而在某些场景中，一个值可以在其方法内部被修改，同时对于其它代码不可变，是很有用的：
+
+    // 定义在外部库中的特征
+    pub trait Messenger {
+        fn send(&self, msg: String);
+    }
+
+    pub struct MsgQueue {
+        msg_cache: RefCell<Vec<String>>,
+    }
+
+    impl Messenger for MsgQueue {
+        fn send(&self, msg: String) {
+            println!("cache add: {}", msg);
+            self.msg_cache.borrow_mut().push(msg)
+        }
+    }
+
+    let mq = MsgQueue {
+        msg_cache: RefCell::new(Vec::new()),
+    };
+
+    mq.send("hello, world".to_string());
 }
