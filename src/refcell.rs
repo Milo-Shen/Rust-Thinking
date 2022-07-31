@@ -110,4 +110,17 @@ pub fn cell_refcell() {
     y.set(3);
     z.set(4);
     println!("{}", x.get());
+
+    // code snipet 2
+    // let mut x = 1;
+    // let y = &mut x;
+    // let z = &mut x;
+    // x = 2;
+    // *y = 3;
+    // *z = 4;
+    // println!("{}", x);
+
+    // 虽然性能一致，但代码 1 拥有代码 2 不具有的优势：它能编译成功:)
+    // 与 Cell 的 zero cost 不同，RefCell 其实是有一点运行期开销的，原因是它包含了一个字大小的“借用状态”指示器，该指示器在每次运行时借用时都会被修改，进而产生一点开销。
+    // 总之，当非要使用内部可变性时，首选 Cell，只有你的类型没有实现 Copy 时，才去选择 RefCell。
 }
