@@ -1,3 +1,5 @@
+use std::sync::atomic::{AtomicUsize, Ordering};
+
 pub fn global_variable() {
     // 在一些场景，我们可能需要全局变量来简化状态共享的代码，包括全局 ID，全局数据存储等等，下面一起来看看有哪些创建全局变量的方法。
     // 首先，有一点可以肯定，全局变量的生命周期肯定是'static，但是不代表它需要用static来声明，例如常量、字符串字面值等无需使用static进行声明，原因是它们已经被打包到二进制可执行文件中。
@@ -34,4 +36,41 @@ pub fn global_variable() {
     // 静态变量和常量的区别
     // 1. 静态变量不会被内联，在整个程序中，静态变量只有一个实例，所有的引用都会指向同一个地址
     // 2. 存储在静态变量中的值必须要实现 Sync trait
+
+    // 原子类型
+    // 想要全局计数器、状态控制等功能，又想要线程安全的实现，原子类型是非常好的办法。
+    // static REQUEST_RECV: AtomicUsize = AtomicUsize::new(0);
+    // for _ in 0..100 {
+    //     REQUEST_RECV.fetch_add(1, Ordering::Relaxed);
+    // }
+    // println!("当前用户请求数{:?}", REQUEST_RECV);
+
+    // 示例：全局 ID 生成器
+    struct Factory {
+        factory_id: usize,
+    }
+
+    static GLOBAL_ID_COUNTER: AtomicUsize = AtomicUsize::new(0);
+    const MAX_IDs: usize = usize::MAX / 2;
+
+    fn generate_id() -> usize {
+        // 检查两次溢出，否则直接加一可能导致溢出
+        let current_val = GLOBAL_ID_COUNTER.load(Ordering::Relaxed);
+        if current_val > MAX_IDs {
+            panic!("Factory ids overflowed");
+        }
+        let next_id = GLOBAL_ID_COUNTER.fetch_add(1, Ordering::Relaxed);
+        if next_id > MAX_IDs {
+            panic!("Factory ids overflowed");
+        }
+        next_id
+    }
+
+    impl Factory {
+        fn new() -> Self {
+            Self {
+                factory_id: generate_id(),
+            }
+        }
+    }
 }
