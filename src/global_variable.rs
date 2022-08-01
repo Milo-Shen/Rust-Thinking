@@ -8,6 +8,6 @@ pub fn global_variable() {
 
     // 静态常量
     // 全局常量可以在程序任何一部分使用，当然，如果它是定义在某个模块中，你需要引入对应的模块才能使用。常量，顾名思义它是不可变的，很适合用作静态配置：
-    const MAX_ID: usize = usize::MAX / 2;
+    const MAX_ID: usize = usize::MAX;
     println!("用户ID允许的最大值是{}", MAX_ID);
 }
