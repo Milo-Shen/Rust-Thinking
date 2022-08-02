@@ -91,4 +91,8 @@ pub fn global_variable() {
         CONFIG = Some(Box::leak(c));
         println!("{:?}", CONFIG);
     }
+
+    // 简单来说，全局变量可以分为两种：
+    // 1. 编译期初始化的全局变量，const创建常量，static创建静态变量，Atomic创建原子类型
+    // 2. 运行期初始化的全局变量，lazy_static用于懒初始化，Box::leak利用内存泄漏将一个变量的生命周期变为'static
 }
