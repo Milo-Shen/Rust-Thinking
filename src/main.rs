@@ -7,6 +7,7 @@ mod deep_lifecycle;
 mod deep_trait;
 mod destructuring_assignment;
 mod enumerations_and_integers;
+mod error_handling;
 mod generics;
 mod global_variable;
 mod hash_map;
@@ -169,4 +170,7 @@ fn main() {
 
     println!("learn global variable");
     global_variable::global_variable();
+
+    println!("learn error handling");
+    error_handling::error_handling();
 }
