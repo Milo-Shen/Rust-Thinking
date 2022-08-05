@@ -14,6 +14,7 @@ pub fn error_handling() {
     // or()，表达式按照顺序求值，若任何一个表达式的结果是 Some 或 Ok，则该值会立刻返回
     // and()，若两个表达式的结果都是 Some 或 Ok，则第二个表达式中的值被返回。若任何一个的结果是 None 或 Err ，则立刻返回。
     // 实际上，只要将布尔表达式的 true / false，替换成 Some / None 或 Ok / Err 就很好理解了。
+
     let s1 = Some("some1");
     let s2 = Some("some2");
     let n: Option<&str> = None;
@@ -42,4 +43,9 @@ pub fn error_handling() {
     assert_eq!(o1.and(e1), e1); // Ok and Err = Err
     assert_eq!(e1.and(o1), e1); // Err and Ok = Err
     assert_eq!(e1.and(e2), e1); // Err1 and Err2 = Err1
+
+    // 除了 or 和 and 之外，Rust 还为我们提供了 xor ，但是它只能应用在 Option 上，其实想想也是这个理，如果能应用在 Result 上，那你又该如何对一个值和错误进行异或操作？
+
+    // or_else() 和 and_then()
+    // 它们跟 or() 和 and() 类似，唯一的区别在于，它们的第二个表达式是一个闭包。
 }
