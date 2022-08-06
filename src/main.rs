@@ -35,6 +35,7 @@ mod rc_arc;
 mod refcell;
 mod reference;
 mod return_values_and_error_handling;
+mod rust_common_pitfalls;
 mod self_referential_struct;
 mod sized_dst;
 mod statements_expressions;
@@ -173,4 +174,7 @@ fn main() {
 
     println!("learn error handling");
     error_handling::error_handling();
+
+    println!("learn rust common pitfalls");
+    rust_common_pitfalls::rust_common_pitfalls();
 }
