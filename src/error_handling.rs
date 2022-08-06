@@ -178,4 +178,17 @@ pub fn error_handling() {
 
     assert_eq!(o.map_or_else(fn_default_for_result, fn_closure), 12);
     assert_eq!(e.map_or_else(fn_default_for_result, fn_closure), 6);
+
+    // ok_or() and ok_or_else()
+    // 这两兄弟可以将 Option 类型转换为 Result 类型。其中 ok_or 接收一个默认的 Err 参数:
+    const ERR_DEFAULT: &str = "error message";
+
+    let s = Some("abcde");
+    let n: Option<&str> = None;
+
+    let o: Result<&str, &str> = Ok("abcde");
+    let e: Result<&str, &str> = Err(ERR_DEFAULT);
+
+    assert_eq!(s.ok_or(ERR_DEFAULT), o); // Some(T) -> Ok(T)
+    assert_eq!(n.ok_or(ERR_DEFAULT), e); // None -> Err(default)
 }
