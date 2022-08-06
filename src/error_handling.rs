@@ -103,4 +103,14 @@ pub fn error_handling() {
     assert_eq!(o1.and_then(fn_err), e2); // Ok and_then Err = Err
     assert_eq!(e1.and_then(fn_ok), e1); // Err and_then Ok = Err
     assert_eq!(e1.and_then(fn_err), e1); // Err1 and_then Err2 = Err1
+
+    // filter
+    // filter 用于对 Option 进行过滤：
+    let s1 = Some(3);
+    let s2 = Some(6);
+    let n = None;
+    let fn_is_even = |x: &i8| x % 2 == 0;
+    assert_eq!(s1.filter(fn_is_even), n); // Some(3) -> 3 is not even -> None
+    assert_eq!(s2.filter(fn_is_even), s2); // Some(6) -> 6 is even -> Some(6)
+    assert_eq!(n.filter(fn_is_even), n); // None -> no value -> None
 }
