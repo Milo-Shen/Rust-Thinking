@@ -147,4 +147,5 @@ pub fn error_handling() {
 
     assert_eq!(o1.map_err(fn_character_count), o2); // Ok1 map = Ok2
     assert_eq!(e1.map_err(fn_character_count), e2); // Err1 map = Err2
+                                                    // 通过对 o1 的操作可以看出，与 map 面对 Err 时的短小类似， map_err 面对 Ok 时也是相当无力的。
 }
