@@ -147,5 +147,17 @@ pub fn error_handling() {
 
     assert_eq!(o1.map_err(fn_character_count), o2); // Ok1 map = Ok2
     assert_eq!(e1.map_err(fn_character_count), e2); // Err1 map = Err2
-                                                    // 通过对 o1 的操作可以看出，与 map 面对 Err 时的短小类似， map_err 面对 Ok 时也是相当无力的。
+
+    // 通过对 o1 的操作可以看出，与 map 面对 Err 时的短小类似， map_err 面对 Ok 时也是相当无力的。
+
+    // map_or() 和 map_or_else()
+    // map_or 在 map 的基础上提供了一个默认值:
+    const V_DEFAULT: u32 = 1;
+
+    let s: Result<u32, ()> = Ok(10);
+    let n: Option<u32> = None;
+    let fn_closure = |v: u32| v + 2;
+
+    assert_eq!(s.map_or(V_DEFAULT, fn_closure), 12);
+    assert_eq!(n.map_or(V_DEFAULT, fn_closure), V_DEFAULT);
 }
