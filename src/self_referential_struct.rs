@@ -63,4 +63,12 @@ pub fn self_referential_struct() {
 
     // cannot borrow `tricky` as immutable because it is also borrowed as mutable
     // println!("{:?}", tricky);
+    // 警惕 UTF-8 引发的性能隐患
+    let s: &str = "中国人";
+    for c in s.chars() {
+        println!("{}", c) // 依次输出：中 、 国 、 人
+    }
+
+    let c = &s[0..3]; // 1. "中" 在 UTF-8 中占用 3 个字节 2. Rust 不支持字符串索引，因此只能通过切片的方式获取 "中"
+    assert_eq!(c, "中");
 }
