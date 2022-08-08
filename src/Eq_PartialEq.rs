@@ -50,4 +50,16 @@ pub fn Eq_PartialEq() {
 
     // 其实，关键点就在于 partial 上，如果我们的类型只在部分情况下具有相等性，那你就只能实现 PartialEq，否则可以实现 PartialEq 然后再默认实现 Eq。
     // 好的，问题逐步清晰起来，现在我们只需要搞清楚何为部分相等。
+
+    // 部分相等性
+    // 首先我们需要找到一个类型，它实现了 PartialEq 但是没有实现 Eq（你可能会想有没有反过来的情况？当然没有啦，部分相等肯定是全部相等的子集！）
+    // 在 HashMap 章节提到过 HashMap 的 key 要求实现 Eq 特征，也就是要能完全相等，而浮点数由于没有实现 Eq ，因此不能用于 HashMap 的 key。
+    let f1 = f32::NAN;
+    let f2 = f32::NAN;
+
+    if f1 == f2 {
+        println!("NaN 竟然可以比较，这很不数学啊！")
+    } else {
+        println!("果然，虽然两个都是 NaN ，但是它们其实并不相等")
+    }
 }
