@@ -28,4 +28,26 @@ pub fn Eq_PartialEq() {
 
     let a = Pair::new(1, 1);
     a.cmp_display();
+
+    // 再比如， + 号需要实现 std::ops::Add 特征，而本文的主角 Eq 和 PartialEq 正是 == 和 != 所需的特征，那么问题来了，这两个特征有何区别？
+    enum BookFormat {
+        Paperback,
+        Hardback,
+        Ebook,
+    }
+    struct Book {
+        isbn: i32,
+        format: BookFormat,
+    }
+
+    impl PartialEq for Book {
+        fn eq(&self, other: &Self) -> bool {
+            self.isbn == other.isbn
+        }
+    }
+
+    impl Eq for Book {}
+
+    // 其实，关键点就在于 partial 上，如果我们的类型只在部分情况下具有相等性，那你就只能实现 PartialEq，否则可以实现 PartialEq 然后再默认实现 Eq。
+    // 好的，问题逐步清晰起来，现在我们只需要搞清楚何为部分相等。
 }
