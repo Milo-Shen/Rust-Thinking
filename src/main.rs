@@ -1,3 +1,4 @@
+mod Eq_PartialEq;
 mod basic_types;
 mod char_bool_unit;
 mod circular_reference_and_self_reference;
@@ -177,4 +178,7 @@ fn main() {
 
     println!("learn rust common pitfalls");
     rust_common_pitfalls::rust_common_pitfalls();
+
+    println!("learn Eq & PartialEq");
+    Eq_PartialEq::Eq_PartialEq();
 }
