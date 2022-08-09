@@ -1,4 +1,4 @@
-use std::fmt::{Debug, Display};
+use std::fmt::{self, Debug, Display};
 
 pub fn error_handling() {
     // 在之前的返回值和错误处理章节中，我们学习了几个重要的概念，例如 Result 用于返回结果处理，? 用于错误的传播，若大家对此还较为模糊，强烈建议回头温习下。
@@ -215,4 +215,29 @@ pub fn error_handling() {
 
     // 当自定义类型实现该特征后，该类型就可以作为 Err 来使用，下面一起来看看。
     // 实际上，自定义错误类型只需要实现 Debug 和 Display 特征即可，source 方法是可选的，而 Debug 特征往往也无需手动实现，可以直接通过 derive 来派生
+
+    // 最简单的错误
+    // AppError 是自定义错误类型，它可以是当前包中定义的任何类型，在这里为了简化，我们使用了单元结构体作为例子。
+    // 为 AppError 自动派生 Debug 特征
+    #[derive(Debug)]
+    struct AppError;
+
+    // 为 AppError 实现 std::fmt::Display 特征
+    impl Display for AppError {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            write!(f, "An Error Occurred, Please Try Again!") // user-facing output
+        }
+    }
+
+    // 一个示例函数用于产生 AppError 错误
+    fn produce_error() -> Result<(), AppError> {
+        Err(AppError)
+    }
+
+    match produce_error() {
+        Err(e) => eprintln!("{}", e),
+        _ => println!("No error"),
+    }
+
+    eprintln!("print = {:?}", produce_error()); // Err({ file: src/main.rs, line: 17 })
 }

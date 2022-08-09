@@ -173,12 +173,12 @@ fn main() {
     println!("learn global variable");
     global_variable::global_variable();
 
-    println!("learn error handling");
-    error_handling::error_handling();
-
     println!("learn rust common pitfalls");
     rust_common_pitfalls::rust_common_pitfalls();
 
     println!("learn Eq & PartialEq");
     Eq_PartialEq::Eq_PartialEq();
+
+    println!("learn error handling");
+    error_handling::error_handling();
 }
