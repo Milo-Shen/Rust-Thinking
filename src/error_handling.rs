@@ -1,3 +1,5 @@
+use std::fmt::{Debug, Display};
+
 pub fn error_handling() {
     // 在之前的返回值和错误处理章节中，我们学习了几个重要的概念，例如 Result 用于返回结果处理，? 用于错误的传播，若大家对此还较为模糊，强烈建议回头温习下。
     // 在本章节中一起来看看如何对 Result ( Option ) 做进一步的处理，以及如何定义自己的错误类型。
@@ -202,4 +204,15 @@ pub fn error_handling() {
 
     assert_eq!(s.ok_or_else(fn_err_message), o); // Some(T) -> Ok(T)
     assert_eq!(n.ok_or_else(fn_err_message), e); // None -> Err(default)
+
+    // 自定义错误类型
+    // 虽然标准库定义了大量的错误类型，但是一个严谨的项目，光使用这些错误类型往往是不够的，例如我们可能会为暴露给用户的错误定义相应的类型。
+    // 为了帮助我们更好的定义错误，Rust 在标准库中提供了一些可复用的特征，例如 std::error::Error 特征：
+
+    // pub trait Error: Debug + Display {
+    //     fn source(&self) -> Option<&(Error + 'static)> { ... }
+    // }
+
+    // 当自定义类型实现该特征后，该类型就可以作为 Err 来使用，下面一起来看看。
+    // 实际上，自定义错误类型只需要实现 Debug 和 Display 特征即可，source 方法是可选的，而 Debug 特征往往也无需手动实现，可以直接通过 derive 来派生
 }
