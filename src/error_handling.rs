@@ -240,4 +240,6 @@ pub fn error_handling() {
     }
 
     eprintln!("print = {:?}", produce_error()); // Err({ file: src/main.rs, line: 17 })
+
+    // 上面的代码中除了实现 From 外，还有一点特别重要，那就是 ? 可以将错误进行隐式的强制转换：File::open 返回的是 std::io::Error， 我们并没有进行任何显式的转换，它就能自动变成 AppError ，这就是 ? 的强大之处！
 }
