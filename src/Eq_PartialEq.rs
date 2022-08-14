@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-pub fn Eq_PartialEq() {
+pub fn eq_partialeq() {
     // Eq 和 PartialEq
     // 在 Rust 中，想要重载操作符，你就需要实现对应的特征。
     // 例如 <、<=、> 和 >= 需要实现 PartialOrd 特征:

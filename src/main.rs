@@ -1,4 +1,3 @@
-mod Eq_PartialEq;
 mod basic_types;
 mod char_bool_unit;
 mod circular_reference_and_self_reference;
@@ -8,6 +7,7 @@ mod deep_lifecycle;
 mod deep_trait;
 mod destructuring_assignment;
 mod enumerations_and_integers;
+mod eq_partialeq;
 mod error_handling;
 mod generics;
 mod global_variable;
