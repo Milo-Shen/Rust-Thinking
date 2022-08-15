@@ -44,6 +44,7 @@ mod static_lifecycle;
 mod trait_obj;
 mod tuple;
 mod type_conversion;
+mod unsafe_rust;
 
 fn main() {
     println!("learn destructuring_assignment");
@@ -181,4 +182,7 @@ fn main() {
 
     println!("learn error handling");
     error_handling::error_handling();
+
+    println!("learn unsafe rust");
+    unsafe_rust::unsafe_rust();
 }
