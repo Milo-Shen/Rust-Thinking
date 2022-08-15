@@ -168,6 +168,9 @@ fn main() {
     println!("learn circular reference and self-reference");
     circular_reference_and_self_reference::circular_reference_and_self_reference();
 
+    println!("learn error handling");
+    error_handling::error_handling();
+
     println!("learn self_referential_struct");
     self_referential_struct::self_referential_struct();
 
