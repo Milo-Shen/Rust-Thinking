@@ -181,7 +181,7 @@ fn main() {
     rust_common_pitfalls::rust_common_pitfalls();
 
     println!("learn Eq & PartialEq");
-    Eq_PartialEq::Eq_PartialEq();
+    eq_partialeq::eq_partialeq();
 
     println!("learn error handling");
     error_handling::error_handling();
