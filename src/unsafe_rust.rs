@@ -39,4 +39,28 @@ pub fn unsafe_rust() {
     unsafe {
         println!("r1 is: {}", *r2);
     }
+
+    // 基于内存地址创建裸指针
+    // 在上面例子中，我们基于现有的引用来创建裸指针，这种行为是很安全的。但是接下来的方式就不安全了：
+    let address = 0x012345usize;
+    let r = address as *const i32;
+
+    // 这里基于一个内存地址来创建裸指针，可以想像，这种行为是相当危险的。
+    // 试图使用任意的内存地址往往是一种未定义的行为(undefined behavior)，因为该内存地址有可能存在值，也有可能没有，就算有值，也大概率不是你需要的值。
+    // 同时编译器也有可能会优化这段代码，会造成没有任何内存访问发生，甚至程序还可能发生段错误(segmentation fault)。总之，你几乎没有好的理由像上面这样实现代码，虽然它是可行的。
+
+    // 使用 * 解引用
+    let a = 1;
+    let b: *const i32 = &a as *const i32;
+    let c: *const i32 = &a;
+    unsafe {
+        println!("{}", *c);
+    }
+
+    // 基于智能指针创建裸指针
+    let a: Box<i32> = Box::new(10);
+    // 需要先解引用a
+    let b: *const i32 = &*a;
+    // 使用 into_raw 来创建
+    let c: *const i32 = Box::into_raw(a);
 }
